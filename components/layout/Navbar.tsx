@@ -84,11 +84,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                         <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
                     </svg>
                 </div>
-                <div className="hidden md:block">
+                <div>
                     <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight">
                         {displayCompanyName}
                     </h1>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
+                    <p className="hidden md:block text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
                 </div>
             </div>
           </div>
