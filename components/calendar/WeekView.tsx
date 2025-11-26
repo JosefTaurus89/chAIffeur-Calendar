@@ -1,8 +1,8 @@
-
 import React, { useMemo, useEffect, useRef } from 'react';
 import { Service, User, AppSettings } from '../../types';
 import { getHours, isSameDay, isToday } from '../../lib/calendar-utils';
 import { TimeSlotItem } from './TimeSlotItem';
+import { calculateEventPositions } from '../../lib/layout-utils';
 
 interface WeekViewProps {
   days: Date[];
@@ -31,7 +31,15 @@ const DayColumn: React.FC<{
   endHour: number;
   timeFormat: '12h' | '24h';
 }> = ({ day, services, isSelected, onSelectService, onTimeSlotClick, onMoveService, timeSlotHeight, drivers, startHour, endHour, timeFormat }) => {
-  const servicesForDay = services.filter(service => isSameDay(service.startTime, day));
+  // Filter and layout
+  const servicesForDay = useMemo(() => {
+      return services.filter(service => isSameDay(new Date(service.startTime), day));
+  }, [services, day]);
+
+  const layoutPositions = useMemo(() => {
+      return calculateEventPositions(servicesForDay);
+  }, [servicesForDay]);
+
   const hours = getHours(startHour, endHour);
 
   const handleTimeSlotClick = (hour: number) => {
@@ -80,6 +88,7 @@ const DayColumn: React.FC<{
         <div className="relative w-full h-full">
             {servicesForDay.map(service => {
             const driver = drivers.find(d => d.id === service.driverId);
+            const pos = layoutPositions.get(service.id);
             return (
                 <div key={service.id} className="pointer-events-auto">
                     <TimeSlotItem 
@@ -89,6 +98,8 @@ const DayColumn: React.FC<{
                         driverAvailability={driver?.availability}
                         startHour={startHour}
                         timeFormat={timeFormat}
+                        left={pos?.left}
+                        width={pos?.width}
                     />
                 </div>
             );

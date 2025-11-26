@@ -147,6 +147,45 @@ export const Calendar: React.FC<CalendarProps> = ({
   const [zoomLevel, setZoomLevel] = useState(settings.compactMode ? 2 : 3); 
   const { t } = useTranslation(settings.language);
 
+  // --- Touch Swipe Logic ---
+  const [touchStart, setTouchStart] = useState<{x: number, y: number} | null>(null);
+  const [touchEnd, setTouchEnd] = useState<{x: number, y: number} | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+      setTouchEnd(null);
+      setTouchStart({
+          x: e.targetTouches[0].clientX,
+          y: e.targetTouches[0].clientY
+      });
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+      setTouchEnd({
+          x: e.targetTouches[0].clientX,
+          y: e.targetTouches[0].clientY
+      });
+  };
+
+  const onTouchEnd = () => {
+      if (!touchStart || !touchEnd) return;
+      
+      // Disable swipe if search is active
+      if (searchQuery.trim().length > 0) return;
+
+      const distanceX = touchStart.x - touchEnd.x;
+      const distanceY = touchStart.y - touchEnd.y;
+      const isHorizontal = Math.abs(distanceX) > Math.abs(distanceY);
+
+      if (isHorizontal && Math.abs(distanceX) > minSwipeDistance) {
+          if (distanceX > 0) {
+              goToNext();
+          } else {
+              goToPrevious();
+          }
+      }
+  };
+
   const isAdmin = userRole === 'ADMIN';
 
   // Generate localized weekdays
@@ -377,7 +416,12 @@ export const Calendar: React.FC<CalendarProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900">
+    <div 
+        className="flex flex-col h-full bg-white dark:bg-slate-900"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+    >
       {/* Header: Dark Template Style Bar */}
       <div className="flex items-center overflow-x-auto no-scrollbar gap-3 p-3 border-b border-slate-700 bg-[#151e32] text-white flex-nowrap shadow-md z-20">
         

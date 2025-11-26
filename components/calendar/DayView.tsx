@@ -1,8 +1,8 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { Service, User, AppSettings } from '../../types';
 import { getHours, isSameDay } from '../../lib/calendar-utils';
 import { TimeSlotItem } from './TimeSlotItem';
+import { calculateEventPositions } from '../../lib/layout-utils';
 
 interface DayViewProps {
   day: Date;
@@ -21,7 +21,14 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
   const startHour = settings.calendarStartHour ?? 0;
   const endHour = settings.calendarEndHour ?? 24;
   const hours = getHours(startHour, endHour);
-  const servicesForDay = services.filter(service => isSameDay(service.startTime, day));
+  
+  const servicesForDay = useMemo(() => {
+      return services.filter(service => isSameDay(new Date(service.startTime), day));
+  }, [services, day]);
+
+  const layoutPositions = useMemo(() => {
+      return calculateEventPositions(servicesForDay);
+  }, [servicesForDay]);
 
   const handleTimeSlotClick = (hour: number) => {
     const newServiceTime = new Date(day);
@@ -103,6 +110,7 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
             <div className="relative w-full h-full">
                 {servicesForDay.map(service => {
                 const driver = drivers.find(d => d.id === service.driverId);
+                const pos = layoutPositions.get(service.id);
                 return (
                     // Enable pointer events on the item itself
                     <div key={service.id} className="pointer-events-auto">
@@ -113,6 +121,8 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
                             driverAvailability={driver?.availability}
                             startHour={startHour}
                             timeFormat={settings.timeFormat}
+                            left={pos?.left}
+                            width={pos?.width}
                         />
                     </div>
                 );

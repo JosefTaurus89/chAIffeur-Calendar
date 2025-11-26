@@ -57,7 +57,7 @@ export const useServiceManager = () => {
         fontStyle: 'inter',
         defaultView: 'calendar',
         defaultServiceDuration: 60,
-        autoSyncGoogleCalendar: false,
+        autoSyncGoogleCalendar: true, // Default set to TRUE
         currency: 'EUR', // Changed default to EUR
         timeFormat: '12h',
         calendarStartHour: 0,
