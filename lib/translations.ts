@@ -308,7 +308,7 @@ export const translations = {
     delete_all_data: "Delete All Data (Clear Mocks)",
     danger_zone: "Danger Zone",
     ai_financial_assistant: "AI Financial Assistant",
-    manual_ai_title: "AI Tools",
+    // manual_ai_title removed here to avoid duplication
     ai_financial_assistant_desc: "Track Revenue, Profit, and Cash Flow with advanced insights.",
     profit_margin: "Profit Margin",
     efficiency_rate: "Efficiency Rate",
@@ -318,23 +318,113 @@ export const translations = {
     ai_chat_placeholder: "e.g., How does our revenue compare to our costs?",
     get_insights: "Get Insights",
     ai_analyzing: "AI is analyzing your data...",
-    // Manual Keys...
-    manual_title: "New ChAIffeur Calendar - User Manual",
+    
+    // MANUAL CONTENT START
+    manual_title: "NCC Calendar - User Manual",
     manual_subtitle: "Complete documentation for administrators and dispatchers.",
     manual_toc: "Table of Contents",
     manual_intro_title: "Introduction & Getting Started",
-    manual_intro_content: "<p>...</p>",
-    manual_dashboard_title: "Dashboard & Views",
-    manual_dashboard_content: "<p>...</p>",
-    manual_services_title: "Creating Services",
-    manual_services_content: "<p>...</p>",
-    manual_ai_content: "<p>...</p>",
+    manual_intro_content: `
+        <p>Welcome to <strong>NCC: New ChAIffeur Calendar</strong>, the comprehensive management solution designed for Limousine Services, Chauffeurs, and Tour Operators.</p>
+        <p>This application streamlines your daily operations by combining a powerful scheduling calendar with fleet management, financial tracking, and AI-powered automation.</p>
+        <p class="mt-4 font-semibold">Key Concepts:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Services:</strong> The core booking unit (Transfers, Tours, etc.).</li>
+            <li><strong>Resources:</strong> Your Drivers, Vehicles, and Supplier Partners.</li>
+            <li><strong>Sync:</strong> Optional integration with Google Calendar for mobile visibility.</li>
+        </ul>
+    `,
+    manual_dashboard_title: "Dashboard & Calendar",
+    manual_dashboard_content: `
+        <p>The <strong>Calendar</strong> is your main command center. It offers three views tailored to different planning needs:</p>
+        <ul class="list-disc pl-5 space-y-2 mt-2">
+            <li><strong>Month View:</strong> High-level overview of your schedule. Drag and drop services to reschedule them to different days.</li>
+            <li><strong>Week View:</strong> Detailed timeline for the week. Great for spotting gaps in the schedule and managing driver overlap.</li>
+            <li><strong>Day View:</strong> Granular hourly view for precise dispatching.</li>
+        </ul>
+        <p class="mt-4 font-semibold">Navigation & Tools:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Filtering:</strong> Click the 'Filters' button to filter by Driver (see who is free) or Service Type (e.g., only Transfers).</li>
+            <li><strong>Search:</strong> Use the search bar (magnifying glass) to instantly find bookings by client name, ref number, or address.</li>
+            <li><strong>Quick Create:</strong> Double-click on any empty day or time slot to create a new service instantly.</li>
+        </ul>
+    `,
+    manual_services_title: "Creating & Managing Services",
+    manual_services_content: `
+        <p>Creating accurate service records is crucial for operations and finance. Click the <strong>+</strong> button to start.</p>
+        <h4 class="font-bold mt-3">1. Logistics & Route</h4>
+        <p>Enter the Pickup address, Dropoff address, and any intermediate stops. The system visualizes the route timeline.</p>
+        
+        <h4 class="font-bold mt-3">2. Fulfillment</h4>
+        <p>Decide who performs the job:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Internal:</strong> Assign one of your Drivers and a Vehicle.</li>
+            <li><strong>Outsourced:</strong> Assign a Supplier Partner. You will need to enter the <strong>Supplier Cost</strong> later.</li>
+        </ul>
+
+        <h4 class="font-bold mt-3">3. Financials</h4>
+        <p>Accurate financial data ensures your reports are correct.</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Client Price:</strong> Total amount charged to the client.</li>
+            <li><strong>Deposit:</strong> Any amount paid upfront.</li>
+            <li><strong>Payment Method:</strong> How the balance is settled (Cash, Credit Card, Invoice, etc.). This affects the "Cash Collected" reports for drivers.</li>
+        </ul>
+    `,
+    manual_ai_title: "AI Smart Paste",
+    manual_ai_content: `
+        <p><strong>Smart Paste</strong> is our signature feature designed to eliminate manual data entry. It uses Google Gemini AI to parse unstructured text into structured bookings.</p>
+        <p class="mt-2 font-semibold">How to use it:</p>
+        <ol class="list-decimal pl-5 space-y-2 mt-1">
+            <li>Copy the full text of a reservation request (e.g., from an email, WhatsApp, PDF, or Booking.com confirmation).</li>
+            <li>Click 'Create New Service' or the 'Smart Paste' button.</li>
+            <li>Paste the text into the AI box and click <strong>Analyze</strong>.</li>
+        </ol>
+        <p class="mt-2">The AI will automatically extract:</p>
+        <ul class="list-disc pl-5">
+            <li>Date & Time (handling relative dates like "next Friday")</li>
+            <li>Pickup/Dropoff Locations & Flight Numbers</li>
+            <li>Passenger counts & Luggage details</li>
+            <li>Client Name & Contact info</li>
+            <li>Price & Payment method (if mentioned)</li>
+        </ul>
+    `,
     manual_fleet_title: "Fleet Management",
-    manual_fleet_content: "<p>...</p>",
+    manual_fleet_content: `
+        <p>Keep track of your assets and team availability in the specific tabs.</p>
+        
+        <h4 class="font-bold mt-3">Drivers</h4>
+        <p>Add driver profiles and contact info. Use the <strong>Availability</strong> tab to mark days off, holidays, or sick leave. These days will appear with a black background on the main calendar to prevent scheduling conflicts.</p>
+        
+        <h4 class="font-bold mt-3">Vehicles</h4>
+        <p>Manage your fleet list, including license plates and model details. The system tracks <strong>Insurance Expiry</strong> and <strong>Maintenance Dates</strong>, alerting you on the calendar when dates are approaching.</p>
+        
+        <h4 class="font-bold mt-3">Daily Assignments</h4>
+        <p>Link a specific vehicle to a driver for a specific day. This auto-fills the vehicle information on Driver Agendas, Manifests, and Vouchers.</p>
+    `,
     manual_financials_title: "Financial Reports",
-    manual_financials_content: "<p>...</p>",
+    manual_financials_content: `
+        <p>The Financials module provides deep insights into your business health and automates settlement calculations.</p>
+        
+        <h4 class="font-bold mt-3">Driver Settlement</h4>
+        <p>Calculates "Net Payable" for each driver. It compares the driver's agreed wage (if set as cost) against the cash/card payments they collected on-site.</p>
+        <p class="italic bg-slate-100 p-2 rounded border-l-4 border-slate-400 mt-1">Example: If a driver earns $100 salary for a job but collected $150 cash from the client, the report shows they owe the office $50.</p>
+        
+        <h4 class="font-bold mt-3">Supplier Reports</h4>
+        <p>Generates statements for partners ("Statement of Account"). It tracks what you owe them (Cost) versus what they collected on your behalf (Cash/Extras).</p>
+        
+        <h4 class="font-bold mt-3">Agency Reports</h4>
+        <p>Track revenue from booking agencies (Viator, Booking.com, Hotels). See total volume, total revenue, and net profit after costs.</p>
+    `,
     manual_settings_title: "Settings & Backup",
-    manual_settings_content: "<p>...</p>"
+    manual_settings_content: `
+        <p>Customize the application to fit your business identity.</p>
+        <ul class="list-disc pl-5 space-y-2 mt-2">
+            <li><strong>Branding:</strong> Update your Company Name, Address, and Contacts. These details appear on the printable Vouchers and PDF Reports.</li>
+            <li><strong>Configuration:</strong> Add custom Payment Methods and rename Service Types to match your terminology.</li>
+            <li><strong>Backup:</strong> Your data is stored locally in your browser for speed and privacy. Use the <strong>Download Backup</strong> button regularly to save a JSON file of your data. You can Restore this file on any device to transfer your data.</li>
+        </ul>
+    `
+    // MANUAL CONTENT END
   },
   it: {
     // ... Existing Keys ...

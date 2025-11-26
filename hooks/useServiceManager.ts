@@ -72,7 +72,7 @@ export const useServiceManager = () => {
             [ServiceType.TOUR]: { label: 'Tour / Hourly', color: 'emerald' },
             [ServiceType.CUSTOM]: { label: 'Custom / Event', color: 'fuchsia' },
         },
-        companyName: 'New ChAIffeur Services',
+        companyName: 'NCC: New ChAIffeur Calendar',
         companyAddress: '',
         companyPhone: '',
         companyEmail: '',

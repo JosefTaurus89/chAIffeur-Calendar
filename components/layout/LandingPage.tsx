@@ -27,7 +27,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, isSyncing })
                     <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
                 </svg>
             </div>
-            <span className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">New ChAIffeur</span>
+            <span className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">NCC: New ChAIffeur Calendar</span>
         </div>
         
         <div className="flex items-center gap-4">

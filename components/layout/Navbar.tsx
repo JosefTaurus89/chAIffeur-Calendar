@@ -61,6 +61,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
       );
   };
 
+  // Force the new name if the setting is still the old default, otherwise use the setting or the new default.
+  const defaultName = 'NCC: New ChAIffeur Calendar';
+  const displayCompanyName = (settings.companyName === 'New ChAIffeur Services' || !settings.companyName)
+      ? defaultName
+      : settings.companyName;
+
   return (
     <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 shadow-sm print:hidden">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                 </div>
                 <div className="hidden md:block">
                     <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight">
-                        {settings.companyName || 'NCC Calendar'}
+                        {displayCompanyName}
                     </h1>
                     <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
                 </div>
