@@ -1,7 +1,6 @@
 
 export const translations = {
   en: {
-    // ... Existing Keys ...
     dashboard: "Dashboard",
     calendar: "Calendar",
     drivers: "Drivers",
@@ -311,7 +310,6 @@ export const translations = {
     delete_all_data: "Delete All Data (Clear Mocks)",
     danger_zone: "Danger Zone",
     ai_financial_assistant: "AI Financial Assistant",
-    manual_ai_title: "AI Tools",
     ai_financial_assistant_desc: "Track Revenue, Profit, and Cash Flow with advanced insights.",
     profit_margin: "Profit Margin",
     efficiency_rate: "Efficiency Rate",
@@ -331,301 +329,567 @@ export const translations = {
     ask_manual_placeholder: "Ask me anything about the app (e.g. 'How do I add a driver?')",
     manual_ai_helper_title: "Ask the Manual",
     manual_ai_helper_desc: "Get instant answers about how to use the app.",
-    
-    // Updated Manual Keys with Rich Content
     manual_title: "New ChAIffeur Calendar - User Manual",
     manual_subtitle: "Complete documentation for administrators and dispatchers.",
     manual_toc: "Table of Contents",
-    manual_intro_title: "Introduction",
+    manual_intro_title: "1. Introduction",
     manual_intro_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-            Welcome to <strong>New ChAIffeur Calendar</strong>, the intelligent management system designed for limousine services, transfer companies, and tour operators. 
-            Unlike traditional spreadsheets or basic calendars, this app combines <strong>Google Calendar synchronization</strong> with <strong>AI automation</strong> to streamline your dispatching workflow.
-        </p>
-        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500 my-6">
-            <h4 class="font-bold text-blue-800 dark:text-blue-300 mb-2">Core Philosophy</h4>
-            <p class="text-sm text-blue-700 dark:text-blue-200">
-                The application revolves around the "Service" entity. A Service is not just a calendar event; it contains financial data, route information, client details, and resource assignments (Drivers/Vehicles). 
-                All calculations for driver commissions and supplier debts happen automatically based on these service details.
-            </p>
-        </div>
-    `,
-    manual_dashboard_title: "Dashboard & Views",
-    manual_dashboard_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300">The dashboard provides three distinct perspectives to manage your timeline:</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
-                <h5 class="font-bold text-slate-800 dark:text-slate-100 mb-2">📅 Month View</h5>
-                <p class="text-xs text-slate-600 dark:text-slate-400">
-                    High-level overview. Best for checking availability density.
-                    <br/><br/>
-                    <strong>Tip:</strong> Drag and drop services between days to reschedule them instantly.
-                </p>
-            </div>
-            <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
-                <h5 class="font-bold text-slate-800 dark:text-slate-100 mb-2">📆 Week View</h5>
-                <p class="text-xs text-slate-600 dark:text-slate-400">
-                    Operational grid. Shows exact time slots and potential overlaps.
-                    <br/><br/>
-                    <strong>Tip:</strong> Use this view to find gaps for last-minute bookings.
-                </p>
-            </div>
-            <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
-                <h5 class="font-bold text-slate-800 dark:text-slate-100 mb-2">🕐 Day View</h5>
-                <p class="text-xs text-slate-600 dark:text-slate-400">
-                    Granular focus. See concurrent jobs clearly.
-                    <br/><br/>
-                    <strong>Tip:</strong> Ideal for busy days with 10+ services.
-                </p>
-            </div>
-        </div>
-
-        <h4 class="font-bold text-slate-800 dark:text-slate-100 mt-6 mb-2">Filters & Search</h4>
-        <ul class="list-disc pl-5 space-y-2 text-slate-700 dark:text-slate-300">
-            <li><strong>Global Search:</strong> The search bar in the top navigation searches across Client Names, Emails, and Service Titles.</li>
-            <li><strong>Advanced Filters:</strong> Click the "Filters" button to narrow down the calendar by <em>Service Type</em> (e.g., only Tours) or <em>Driver</em> (e.g., check John's schedule).</li>
-            <li><strong>Saved Filters:</strong> You can save complex filter combinations (e.g., "Tours by John") for quick access later.</li>
+        <p>Welcome to <strong>New ChAIffeur Calendar</strong>, your all-in-one solution for managing premium transfer and tour services.</p>
+        <p>This application is designed to streamline the workflow of dispatchers, chauffeurs, and tour operators by combining intuitive calendar scheduling with powerful automation tools.</p>
+        <p><strong>Key Objectives:</strong></p>
+        <ul>
+            <li>Eliminate double bookings.</li>
+            <li>Speed up data entry using AI extraction from emails.</li>
+            <li>Automate financial calculations for drivers and suppliers.</li>
+            <li>Provide a centralized, cloud-synced view of your entire operation.</li>
         </ul>
     `,
-    manual_services_title: "Creating Services",
+    manual_dashboard_title: "2. Dashboard & Calendar Views",
+    manual_dashboard_content: `
+        <p>The <strong>Calendar</strong> is the heart of the application. It provides three main perspectives:</p>
+        <ul>
+            <li><strong>Month View:</strong> Best for high-level planning. Shows a concise list of jobs for each day.
+                <ul>
+                    <li><em>Click a Day:</em> Opens the Day view for that specific date.</li>
+                    <li><em>Click a Service:</em> Selects that service for editing or detailed viewing.</li>
+                    <li><em>Drag & Drop:</em> Quickly move a service from one day to another.</li>
+                </ul>
+            </li>
+            <li><strong>Week View:</strong> Visualize your workload hour-by-hour across 7 days.
+                <ul>
+                    <li>Great for spotting gaps in availability.</li>
+                    <li>Drag services vertically to change times, or horizontally to change days.</li>
+                </ul>
+            </li>
+            <li><strong>Day View:</strong> The most detailed view. Manage precise timing and overlaps.
+                <ul>
+                    <li>Supports "side-by-side" scheduling for simultaneous jobs.</li>
+                    <li>Drag the bottom edge of a service to extend its duration (if supported).</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Navigation & Filters:</strong></p>
+        <ul>
+            <li>Use the top navigation bar to jump to Today or switch months/weeks.</li>
+            <li><strong>Search:</strong> Click the magnifying glass to search for client names, booking references, or addresses instantly.</li>
+            <li><strong>Filter Button:</strong> Opens a panel to filter the calendar by <em>Service Type</em> (e.g., Transfer vs Tour) or <em>Driver</em>. You can save these filter combinations for one-click access later.</li>
+        </ul>
+    `,
+    manual_services_title: "3. Managing Services",
     manual_services_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300">
-            Click any empty slot on the calendar or the "+" floating button to open the <strong>Service Modal</strong>.
-        </p>
-
-        <div class="space-y-6">
-            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-5 rounded-lg border border-indigo-100 dark:border-indigo-800">
-                <h4 class="font-bold text-indigo-800 dark:text-indigo-300 mb-2 flex items-center">
-                    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">AI</span>
-                    Smart Paste (AI Extraction)
-                </h4>
-                <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
-                    Don't type manually! Copy the reservation email or WhatsApp message and click <strong>"Smart Paste"</strong> at the top of the form. 
-                    The AI will automatically extract:
-                </p>
-                <ul class="list-disc pl-5 text-sm text-slate-600 dark:text-slate-400 grid grid-cols-2 gap-1">
-                    <li>Date & Time</li>
-                    <li>Flight/Train Numbers</li>
-                    <li>Pickup & Dropoff Addresses</li>
-                    <li>Passenger & Luggage Counts</li>
+        <p>Services represent your bookings (Transfers, Tours, or hourly Disposals).</p>
+        <h3>Creating a Service</h3>
+        <p>Click the <strong>"+" Button</strong> or any empty time slot on the calendar. This opens the Service Modal.</p>
+        <ul>
+            <li><strong>Smart Paste (AI):</strong> This is a key feature. Instead of typing manually, simply copy the full text of a reservation email or WhatsApp message into the text box. The AI will extract:
+                <ul>
                     <li>Client Name & Contact</li>
+                    <li>Date & Time</li>
+                    <li>Pickup & Dropoff Locations</li>
+                    <li>Flight Numbers</li>
                     <li>Price & Payment Method</li>
                 </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Service Types</h4>
-                <ul class="list-disc pl-5 space-y-1 text-slate-700 dark:text-slate-300">
-                    <li><strong>Transfer:</strong> Standard point-to-point service.</li>
-                    <li><strong>Disposal / Tour:</strong> Hourly service. Useful for city tours or events.</li>
-                    <li><strong>Transfer w/ Stop:</strong> Adds an intermediate waypoint field to the route.</li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Fulfillment Mode</h4>
-                <p class="text-slate-700 dark:text-slate-300 mb-2">Choose who performs the service:</p>
-                <ul class="list-disc pl-5 space-y-2 text-slate-700 dark:text-slate-300">
-                    <li><strong>Internal (In-House):</strong> Assigned to your driver/vehicle. You track the cash they collect.</li>
-                    <li><strong>Outsourced (Supplier):</strong> Assigned to a partner. You track the "Supplier Cost" (what you pay them) versus the "Client Price" (what they collect or what you bill).</li>
-                </ul>
-            </div>
-        </div>
+            </li>
+            <li><strong>Manual Entry:</strong> Fill in the details yourself. Required fields are Title, Client Name, Date, Time, and Route.</li>
+        </ul>
+        <h3>Edit & Delete</h3>
+        <p>Click on any service bubble to open the <strong>Quick View</strong> card. From here you can:</p>
+        <ul>
+            <li><strong>Edit:</strong> Modify any detail.</li>
+            <li><strong>Delete:</strong> Moves the service to the Trash (recoverable for 30 days).</li>
+            <li><strong>Assign:</strong> Quickly assign a driver or supplier directly from the card.</li>
+            <li><strong>PDF Voucher:</strong> Generate a professional PDF confirmation to email to the client or driver.</li>
+        </ul>
     `,
+    manual_ai_title: "4. AI Features",
     manual_ai_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300">
-            This application integrates Google's Gemini models to act as your intelligent assistant.
-        </p>
-
-        <h4 class="font-bold text-slate-800 dark:text-slate-100 mt-6 mb-3">1. Reservation Parsing</h4>
-        <p class="text-slate-700 dark:text-slate-300 mb-4">
-            The Smart Paste feature uses a specialized prompt to understand complex logistics. It handles multiple languages (English, Italian, Spanish, French, German) and infers context. 
-            For example, if you paste "Deposit 50, balance to driver", it sets the <em>Deposit</em> field to 50 and calculates the <em>Balance Due</em> automatically.
-        </p>
-
-        <h4 class="font-bold text-slate-800 dark:text-slate-100 mt-6 mb-3">2. Financial Assistant</h4>
-        <p class="text-slate-700 dark:text-slate-300 mb-4">
-            Located in the <strong>Financials</strong> tab, this chatbot can answer questions about your business performance.
-            <br/>Try asking:
-        </p>
-        <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded text-sm font-mono text-slate-600 dark:text-slate-400">
-            "Which driver generated the most profit last month?"<br/>
-            "What is my profit margin for Tours vs Transfers?"<br/>
-            "Summarize my outstanding debts to suppliers."
-        </div>
+        <p>This app integrates Google's Gemini AI to act as your virtual assistant.</p>
+        <h3>1. Reservation Extractor</h3>
+        <p>Located in the "Create Service" modal. It understands natural language in multiple languages (English, Italian, Spanish, French, German). It can distinguish between a "Transfer" and a "Tour" based on keywords like "sightseeing" or "disposal".</p>
+        <h3>2. Financial Assistant</h3>
+        <p>Found in the <strong>Financials</strong> tab. You can ask questions in plain English like:</p>
+        <ul>
+            <li>"Which month had the highest profit?"</li>
+            <li>"Who is my most valuable client?"</li>
+            <li>"What is my current cash flow status?"</li>
+        </ul>
+        <h3>3. Manual Helper</h3>
+        <p>Use the search bar at the top of this User Manual page. Ask questions like "How do I add a driver?" and the AI will scan this documentation to give you a summarized answer instantly.</p>
     `,
-    manual_fleet_title: "Fleet Management",
+    manual_fleet_title: "5. Fleet & Drivers",
     manual_fleet_content: `
-        <div className="space-y-6">
-            <p class="text-slate-700 dark:text-slate-300">Manage your resources under the <strong>Drivers</strong> and <strong>Vehicles</strong> tabs.</p>
-
-            <div class="border-l-4 border-green-500 pl-4 py-1">
-                <h4 class="font-bold text-slate-800 dark:text-slate-100">Drivers & Availability</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    Go to <strong>Drivers > Availability</strong> to manage time off. Click a date to mark a driver as "On Leave". 
-                    These days appear blacked out on the main calendar to prevent accidental assignment.
-                </p>
-            </div>
-
-            <div class="border-l-4 border-blue-500 pl-4 py-1">
-                <h4 class="font-bold text-slate-800 dark:text-slate-100">Vehicle Tracking</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    The <strong>Vehicles</strong> tab tracks Insurance and Maintenance dates. Cards will turn red/orange when these dates are approaching. 
-                    Use the <strong>Assignments</strong> sub-tab to allocate vehicles to drivers for specific days.
-                </p>
-            </div>
-
-            <div class="border-l-4 border-purple-500 pl-4 py-1">
-                <h4 class="font-bold text-slate-800 dark:text-slate-100">Driver Agenda & Manifest</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    Under <strong>Drivers > Agenda</strong>, select a driver and a date. The system generates a text summary (for WhatsApp) and a printable PDF Manifest containing all job details for that day.
-                </p>
-            </div>
-        </div>
+        <p>Manage your resources in the <strong>Drivers</strong> and <strong>Vehicles</strong> tabs.</p>
+        <h3>Drivers</h3>
+        <ul>
+            <li><strong>Team Management:</strong> Add internal employees or external freelance partners.</li>
+            <li><strong>Availability:</strong> Use the "Availability" sub-tab to mark days off. Click a date to toggle status. "On Leave" drivers will show as blocked in the scheduler.</li>
+            <li><strong>Agenda:</strong> Generate a daily text manifest to copy/paste into WhatsApp for your drivers.</li>
+        </ul>
+        <h3>Vehicles</h3>
+        <ul>
+            <li><strong>Fleet List:</strong> Track Make, Model, Plate, and Status (Active/Maintenance).</li>
+            <li><strong>Assignments:</strong> Assign a specific vehicle to a driver for a specific day. This helps avoid conflicts where two drivers need the same car.</li>
+            <li><strong>Expiry Tracking:</strong> The system highlights Insurance and Maintenance dates that are approaching or overdue.</li>
+        </ul>
     `,
-    manual_financials_title: "Financials & Accounting",
+    manual_financials_title: "6. Financials & Accounting",
     manual_financials_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300">The Financials module automates the complex "Who owes whom?" calculations common in this industry.</p>
-
-        <h4 class="font-bold text-slate-800 dark:text-slate-100 mt-6 mb-3">Concepts</h4>
-        <ul class="list-disc pl-5 space-y-3 text-slate-700 dark:text-slate-300">
-            <li>
-                <strong>Cash Held by Driver:</strong> Money physically collected by your driver (Cash, Credit Card on board). 
-                <br/><em class="text-sm text-slate-500">Formula: (Client Price - Deposit) + Extras</em>
-            </li>
-            <li>
-                <strong>Net Settlement (Outsourced):</strong> When you farm out a job, the system calculates the net balance.
-                <ul class="list-circle pl-5 mt-1 text-sm text-slate-600">
-                    <li>If Supplier collects cash > Supplier Cost → <strong>Supplier owes You</strong>.</li>
-                    <li>If Supplier collects cash < Supplier Cost → <strong>You owe Supplier</strong>.</li>
+        <p>The Financials module automatically calculates what you owe and what is owed to you based on the service data.</p>
+        <h3>Core Concepts</h3>
+        <ul>
+            <li><strong>Driver Settlement:</strong> For internal drivers. It tracks <em>Cash Collected</em> vs <em>Expenses</em>. If a driver collects cash from a client, the system flags it as "Driver deposits to office".</li>
+            <li><strong>Supplier Settlement:</strong> For outsourced jobs. It tracks <em>Cost</em> (what you pay them) vs <em>Cash Held</em> (what they collected from your client). The "Net Settlement" tells you who pays whom.</li>
+            <li><strong>Agency Reports:</strong> For bookings from B2B partners (e.g., Booking.com, Viator). Tracks total revenue and commissions.</li>
+        </ul>
+        <h3>Reports & Invoices</h3>
+        <ul>
+            <li><strong>Monthly Overview:</strong> High-level view of Revenue, Cost, and Profit.</li>
+            <li><strong>Invoices:</strong> A dedicated list for services marked as "Future Invoice". Use this to track accounts receivable (what agencies owe you) and accounts payable (what you owe suppliers).</li>
+        </ul>
+    `,
+    manual_settings_title: "7. Settings & Customization",
+    manual_settings_content: `
+        <p>Tailor the application to your business needs.</p>
+        <ul>
+            <li><strong>Theme:</strong> Toggle between Light Mode (standard) and Dark Mode (low-light environments).</li>
+            <li><strong>Configuration:</strong>
+                <ul>
+                    <li><em>Service Types:</em> Define custom categories (e.g., Wedding, Wine Tour) and assign them colors.</li>
+                    <li><em>Payment Methods:</em> Add custom methods like "Bitcoin", "Stripe Link", etc.</li>
                 </ul>
             </li>
-            <li>
-                <strong>Agency Reports:</strong> Monthly statements for B2B clients (Agencies/Hotels). Shows all jobs booked by them, total commission, and net gain.
-            </li>
+            <li><strong>Branding:</strong> Upload your Company Name, Address, and Logo (via URL). These details will appear on all generated PDF Vouchers and Financial Reports.</li>
+            <li><strong>Backup:</strong> Your data is stored locally in your browser. Use the "Download Backup" button regularly to save a JSON file of your database. You can "Restore" from this file on any device.</li>
         </ul>
-
-        <h4 class="font-bold text-slate-800 dark:text-slate-100 mt-6 mb-3">Invoice Management</h4>
-        <p class="text-slate-700 dark:text-slate-300 mb-2">
-            The <strong>Invoices</strong> tab tracks payments.
-        </p>
-        <ul class="list-disc pl-5 space-y-1 text-slate-700 dark:text-slate-300">
-            <li><strong>Receivable:</strong> Filters for services with payment method "Future Invoice". Use this to track B2B billing.</li>
-            <li><strong>Payable:</strong> Tracks what you owe to suppliers.</li>
-        </ul>
-    `,
-    manual_settings_title: "Settings & Customization",
-    manual_settings_content: `
-        <p class="mb-4 text-slate-700 dark:text-slate-300">Tailor the app to your brand identity.</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Branding</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                    Update "Company Name", "Address", and "Footer Text". These appear on all generated PDF Vouchers and Reports.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Service Types</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                    Define custom labels and colors (e.g., "Wedding" in Pink, "Business" in Slate) to spot them easily on the calendar.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Backup & Restore</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                    <strong>Important:</strong> This app runs in your browser. To prevent data loss, regularly click "Download Backup". 
-                    You can restore this JSON file on any device to recover your entire database.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-2">Theme</h4>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                    Toggle Dark Mode or change the primary color scheme to match your company branding.
-                </p>
-            </div>
-        </div>
     `
   },
   it: {
-    // ... Existing Keys ...
+    // ... existing Italian translations preserved ...
+    dashboard: "Dashboard",
+    calendar: "Calendario",
+    drivers: "Autisti",
+    suppliers: "Fornitori",
+    financials: "Finanze",
+    settings: "Impostazioni",
     services_list: "Elenco Servizi",
     clients_directory: "Rubrica Clienti",
-    search_services: "Cerca servizi...",
-    total_spend: "Spesa Totale",
-    bookings: "Prenotazioni",
-    last_booking: "Ultimo Servizio",
-    client_history: "Storico",
-    no_clients_found: "Nessun cliente trovato",
-    services_found: "servizi trovati",
+    save: "Salva",
+    cancel: "Annulla",
+    delete: "Elimina",
+    edit: "Modifica",
+    share: "Condividi",
+    download_voucher: "Scarica Voucher",
+    completed: "Completato",
+    all_drivers: "Tutti gli Autisti",
+    today: "Oggi",
+    month: "Mese",
+    week: "Settimana",
+    day: "Giorno",
+    filters: "Filtri",
+    search_placeholder: "Cerca cliente, titolo, indirizzo...",
+    saved_filters: "Filtri Salvati",
+    clear_filters: "Cancella Filtri",
+    by_service_type: "Per Tipo Servizio",
+    by_status: "Per Stato",
+    by_driver: "Per Autista",
+    save_current: "Salva Corrente",
+    delete_selected: "Elimina Selezionato",
+    load_filter: "Carica filtro...",
+    new_filter_name: "Nuovo nome filtro",
+    trash_bin: "Cestino",
+    trash_empty: "Il cestino è vuoto.",
+    restore: "Ripristina",
+    delete_permanently: "Elimina Definitivamente",
+    confirm_delete_service: "Sei sicuro? Questo servizio verrà spostato nel Cestino per 30 giorni prima dell'eliminazione definitiva.",
+    confirm_delete_driver: "Sei sicuro di voler eliminare questo autista? Questa azione non può essere annullata.",
+    confirm_delete_supplier: "Sei sicuro di voler eliminare questo fornitore? Questa azione non può essere annullata.",
+    confirm_delete_vehicle: "Sei sicuro di voler eliminare questo veicolo? Questa azione non può essere annullata.",
+    confirm_permanent_delete: "Sei sicuro? Questa azione non può essere annullata.",
+    service_moved_to_trash: "Servizio spostato nel Cestino.",
+    service_restored: "Servizio ripristinato.",
+    landing_hero_title: "Il Tuo Calendario, Potenziato dall'IA.",
+    landing_hero_subtitle: "Sincronizza perfettamente con Google Calendar. La nostra IA legge le descrizioni degli eventi per organizzare automaticamente trasferimenti, tour e assegnazioni.",
+    landing_cta_signin: "Accedi con Google",
+    landing_cta_syncing: "Sincronizzazione in corso...",
+    landing_feature_sync_title: "Sincronizzazione Bidirezionale",
+    landing_feature_sync_desc: "Gli eventi di Google Calendar appaiono qui automaticamente. I nuovi servizi creati qui vengono salvati su Google.",
+    landing_feature_ai_title: "Estrazione IA",
+    landing_feature_ai_desc: "Lascia che la nostra IA legga le descrizioni per compilare automaticamente percorsi, passeggeri e prezzi.",
+    landing_feature_fleet_title: "Flotta e Finanza",
+    landing_feature_fleet_desc: "Gestisci autisti, assegna veicoli, traccia i pagamenti e genera voucher professionali istantaneamente.",
+    landing_disclaimer_title: "Privacy e Sincronizzazione",
+    landing_disclaimer_text: "Le tue informazioni non vengono archiviate in questa app; vengono salvate direttamente nel tuo account Google.",
+    landing_secure_access: "Accesso sicuro tramite Google Workspace.",
+    landing_contact_support: "Contatta Supporto",
+    tab_team: "Team",
+    tab_availability: "Disponibilità",
+    tab_agenda: "Agenda",
+    tab_reports: "Report",
+    tab_vehicle_list: "Veicoli",
+    tab_assignments: "Assegnazioni",
+    tab_history: "Storico",
+    select_vehicle_history: "Seleziona veicolo per vedere lo storico",
+    vehicle_driver: "Autista",
+    assignment_date: "Data Assegnazione",
+    no_history: "Nessuno storico trovato.",
+    add_driver: "Aggiungi Autista",
+    add_vehicle: "Aggiungi Veicolo",
+    add_supplier: "Aggiungi Fornitore",
+    supplier_list: "Elenco Fornitori",
+    edit_supplier: "Modifica Fornitore",
+    save_supplier: "Salva Fornitore",
+    contact_person: "Referente",
+    contact_email: "Email Contatto",
+    contact_phone: "Telefono Contatto",
+    supplier_name: "Nome Fornitore",
+    select_supplier_partner: "Seleziona Fornitore / Partner",
+    select_supplier_empty: "Seleziona un fornitore per vedere performance ed estratto conto.",
+    select_driver_placeholder: "Seleziona un autista per vedere il report.",
+    PENDING: "In Attesa",
+    CONFIRMED: "Confermato",
+    IN_PROGRESS: "In Corso",
+    COMPLETED: "Completato",
+    CANCELLED: "Cancellato",
+    type_TRANSFER: "Transfer",
+    type_TRANSFER_WITH_STOP: "Transfer con Stop",
+    type_TOUR: "Tour / Disposizione",
+    type_CUSTOM: "Personalizzato",
+    method_Prepaid: "Prepagato",
+    method_Pay_to_the_driver: "Paga all'autista",
+    method_Paid_deposit_balance_to_the_driver: "Acconto pagato + saldo all'autista",
+    method_Future_Invoice: "Fattura Futura",
+    method_Cash: "Contanti",
+    create_service: "Crea Nuovo Servizio",
+    edit_service: "Modifica Servizio",
+    title: "Titolo",
+    client_name: "Nome Cliente",
+    client_email: "Email Cliente",
+    client_phone: "Telefono Cliente",
+    flight_number: "Volo/Treno",
+    start_time: "Ora Inizio",
+    service_date: "Data Servizio",
+    pickup_address: "Indirizzo Ritiro",
+    stop_waypoint: "Fermata Intermedia",
+    dropoff_address: "Indirizzo Destinazione",
+    service_type: "Tipo Servizio",
+    status: "Stato",
+    passengers: "Passeggeri",
+    adults: "Adulti",
+    kids: "Bambini",
     luggage: "Bagagli",
     luggage_big: "Grandi",
     luggage_small: "Piccoli",
     original_description: "Richiesta Originale / Descrizione",
+    notes: "Note",
+    sync_gcal: "Sincronizza Google Calendar",
+    assign_driver_supplier: "Assegna Autista/Fornitore",
+    driver: "Autista",
+    supplier: "Fornitore",
+    unassigned: "Non Assegnato",
+    in_house: "Interno",
+    assign_modal_title: "Assegna Risorsa",
+    assign_helper: "Seleziona un Autista (interno) O un Fornitore (esterno).",
+    save_assignment: "Salva Assegnazione",
+    yearly_performance: "Panoramica Annuale",
+    statement_of_account: "Estratto Conto",
+    detailed_report: "Report Dettagliato",
+    client_price: "Prezzo Cliente",
+    payment_method: "Metodo Pagamento",
+    deposit: "Acconto",
+    balance_due: "Saldo Dovuto",
+    driver_pay_supplier_cost: "Paga Autista / Costo Fornitore",
+    payment_status_in: "Stato Pagamento (In)",
+    payment_status_out: "Stato Pagamento (Out)",
+    profit: "Profitto",
+    invoices: "Fatture",
+    overview: "Panoramica",
+    monthly_reports: "Report Mensili",
+    invoice_management: "Gestione Fatture",
+    financial_health: "Salute Finanziaria",
+    cash_collected: "Contanti Raccolti",
+    deposits_received: "Acconti Ricevuti",
+    supplier_debt: "Debito Fornitori",
+    projected_income: "Incasso Previsto",
+    future_cash: "Contanti Futuri",
+    future_bank: "Banca Futura",
+    past_pending: "Sospesi Passati",
+    net_cash_flow: "Flusso di Cassa Netto",
+    revenue_breakdown: "Ripartizione Entrate",
+    this_month: "Questo Mese",
+    last_month: "Mese Scorso",
+    year_to_date: "Da Inizio Anno",
+    all_time: "Tutto il Tempo",
+    extras_cross_selling: "Extra & Cross-Selling",
+    extras_commission: "Commissione Extra",
+    extras_info: "Info Extra",
+    extras_helper: "Commissioni guadagnate da servizi terzi (es. Guide, Degustazioni).",
+    supplier_holds: "Fornitore trattiene",
+    cost_is: "Costo",
+    balance: "Saldo",
+    extras: "Extra",
+    net_payable_to_supplier: "Netto al Fornitore",
+    net_from_supplier: "Netto dal Fornitore",
+    you_pay_them: "Tu paghi loro",
+    they_pay_you: "Loro pagano te",
+    agency_net_profit: "Profitto Netto Agenzia",
+    total_remittance: "Totale Rimessa",
+    estimated_profit: "Profitto Stimato",
+    total_extras: "Totale Extra",
+    supplier_holds_cash: "Fornitore Trattiene (Cassa)",
+    language: "Lingua",
+    app_language: "Lingua Applicazione",
+    theme_mode: "Tema",
+    light_mode: "Chiaro",
+    dark_mode: "Scuro",
+    color_theme: "Colore Tema",
+    border_radius: "Arrotondamento",
+    font_style: "Stile Font",
+    layout_density: "Densità Layout",
+    comfortable: "Comodo",
+    compact: "Compatto",
+    calendar_preferences: "Preferenze Calendario",
+    app_behavior: "Comportamento App",
+    data_backup: "Dati & Backup",
+    client_invoices: "Fatture Clienti (In)",
+    supplier_bills: "Fatture Fornitori (Out)",
+    filter_by_client: "Filtra per Cliente",
+    filter_by_supplier: "Filtra per Fornitore",
+    show_unpaid_only: "Solo Non Pagati",
+    total_amount: "Importo Totale",
+    invoices_found: "Fatture Trovate",
+    future_invoice_only: "Solo 'Fattura Futura'",
+    past_paid: "Passati Pagati",
+    future_to_be_paid: "Futuri da Pagare",
+    share_driver_msg: "Ciao, domani il tuo autista sarà {name}...",
+    share_service_title: "SERVIZIO",
+    share_time: "ORA",
+    share_from: "DA",
+    share_stop: "VIA",
+    share_to: "A",
+    share_client: "CLIENTE",
+    share_driver: "AUTISTA",
+    share_supplier: "FORNITORE",
+    share_supplier_cost: "COSTO FORNITORE",
+    share_net_settlement: "NETTO DA FORNITORE",
+    share_agency_comm: "COMM AGENZIA",
+    share_collection: "DA INCASSARE",
+    share_notes: "NOTE",
+    manifest_title: "MANIFESTO AUTISTA",
+    manifest_date: "DATA",
+    manifest_jobs: "LAVORI",
+    manifest_no_jobs: "NESSUN SERVIZIO PROGRAMMATO.",
+    manifest_job: "JOB",
+    manifest_pickup: "RITIRO",
+    manifest_stop: "STOP",
+    manifest_dropoff: "DESTINAZIONE",
+    manifest_pax: "PAX",
+    manifest_note: "NOTA",
+    manifest_collect: "AZIONE: INCASSARE",
+    date: "Data",
+    time: "Ora",
+    service: "Servizio",
+    type: "Tipo",
+    amount_payable: "Importo da Pagare",
+    amount_receivable: "Importo da Ricevere",
+    payable_cost: "Da Pagare (Costo)",
+    receivable_price: "Da Ricevere (Prezzo)",
+    net_balance: "Saldo Netto",
+    total_services: "Totale Servizi",
+    total_billed: "Totale Fatturato",
+    outstanding_balance: "Saldo In Sospeso",
+    report_total_cost: "(Costo Totale)",
+    report_total_held: "(- Totale Trattenuto)",
+    report_agency_price: "(+ Prezzo Agenzia)",
+    report_final_total: "= TOTALE FINALE",
+    report_final_settlement: "SALDO FINALE",
+    report_agency_pays_supplier: "AGENZIA PAGA FORNITORE",
+    report_supplier_pays_agency: "FORNITORE PAGA AGENZIA",
+    calculation: "CALCOLO",
+    totals_upper: "TOTALI",
+    invoice_list_receivable: "Elenco Fatture (Crediti)",
+    supplier_bills_payable: "Fatture Fornitori (Debiti)",
+    reference: "Riferimento",
+    total_due: "Totale Dovuto",
+    voucher_header: "VOUCHER DI SERVIZIO",
+    booking_ref: "Rif. Prenotazione",
+    meeting_point: "Punto d'Incontro",
+    destination: "Destinazione",
+    service_details: "Dettagli Servizio",
+    driver_details: "Dettagli Autista",
+    important_info: "Informazioni Importanti",
+    voucher_footer: "Grazie per aver viaggiato con noi!",
+    agency_reports: "Report Agenzie",
+    agency: "Agenzia",
+    booked_by_agency: "Prenotato da Agenzia?",
+    agency_name: "Nome Agenzia",
+    select_agency: "Seleziona Agenzia",
+    total_gain: "Guadagno Totale",
+    gain: "Guadagno",
+    base: "Base",
+    incl_extra: "Incl. Extra",
+    outsourced: "Esternalizzato",
+    agency_job: "Lavoro Agenzia",
+    period: "Periodo",
+    direct_booking: "Prenotazione Diretta",
+    supplier_cost: "Costo Fornitore",
+    confirm_reset_data: "Sei sicuro di voler resettare tutti i dati?",
+    reset_data_success: "Dati resettati con successo.",
+    schedule: "Programma",
+    route: "Percorso",
+    details: "Dettagli",
+    client_info: "Info Cliente",
+    fulfillment: "Esecuzione",
+    financials_section: "Finanze",
+    money_flow: "Flusso di Denaro & Saldo",
+    company_profit: "Profitto Aziendale",
+    total_cash_held: "Totale Cassa Trattenuta",
+    balance_to_collect: "Saldo da Incassare",
+    settled: "Saldato",
+    smart_paste_btn: "Smart Paste (Estrazione IA)",
+    calendar_color: "Colore Calendario",
+    no_vehicle_assigned: "Nessun Veicolo Assegnato",
+    unassigned_driver: "Non Assegnato (Autista)",
+    select_supplier_placeholder: "-- Seleziona Fornitore --",
+    in_house_driver: "Interno (Autista)",
+    outsourced_supplier: "Esternalizzato (Fornitore)",
+    driver_deposit_to_office: "Autista versa {amount} in ufficio",
+    driver_collected: "Autista Incassato",
+    no_cash_handling: "Prepagato/Fattura. Nessun incasso.",
+    company_owes_supplier: "Azienda deve al Fornitore: {amount}",
+    supplier_collected_shortfall: "Fornitore ha incassato {collected}, ma il costo è {cost}",
+    supplier_owes_company: "Fornitore deve all'Azienda: {amount}",
+    supplier_collected_surplus: "Fornitore ha incassato {collected}, coprendo costo ({cost}) ed eccedenza",
+    settings_general: "Generale & Tema",
+    settings_config: "Servizi & Pagamenti",
+    settings_branding: "Branding",
+    settings_trash: "Cestino",
+    interface_theme: "Tema Interfaccia",
+    save_changes: "Salva Modifiche",
+    payment_methods_config: "Configurazione Metodi Pagamento",
+    service_types_config: "Configurazione Tipi Servizio",
+    company_identity: "Identità Aziendale",
+    document_templates: "Modelli Documenti",
+    download_backup: "Scarica Backup (JSON)",
+    restore_data: "Ripristina Dati",
+    delete_all_data: "Elimina Tutti i Dati",
+    danger_zone: "Zona Pericolosa",
+    ai_financial_assistant: "Assistente Finanziario IA",
+    ai_financial_assistant_desc: "Analizza entrate, profitti e flusso di cassa.",
+    profit_margin: "Margine Profitto",
+    efficiency_rate: "Tasso Efficienza",
+    avg_ticket: "Ticket Medio",
+    revenue_per_job: "Ricavo per Lavoro",
+    top_clients: "Migliori Clienti",
+    ai_chat_placeholder: "es. Come si confrontano le entrate con i costi?",
+    get_insights: "Ottieni Analisi",
+    ai_analyzing: "L'IA sta analizzando i dati...",
+    search_services: "Cerca servizi...",
+    total_spend: "Spesa Totale",
+    bookings: "Prenotazioni",
+    last_booking: "Ultima Prenotazione",
+    client_history: "Storico",
+    no_clients_found: "Nessun cliente trovato",
+    services_found: "servizi trovati",
     ask_manual_placeholder: "Chiedimi come fare qualcosa (es. 'Come aggiungo un autista?')",
     manual_ai_helper_title: "Chiedi al Manuale",
     manual_ai_helper_desc: "Usa l'IA per trovare risposte immediate su come funziona l'app.",
-    // ...
+    manual_title: "Manuale Utente",
+    manual_subtitle: "Documentazione completa per amministratori e disponenti.",
+    manual_toc: "Indice",
+    manual_intro_title: "1. Introduzione",
+    manual_intro_content: "<p>Benvenuti in <strong>New ChAIffeur Calendar</strong>, lo strumento definitivo per la gestione della vostra attività di transfer e tour. Questa applicazione combina la semplicità di un calendario con potenti funzionalità di gestione della flotta e automazione IA.</p><p>Funzionalità principali:</p><ul><li>Pianificazione drag-and-drop</li><li>Inserimento prenotazioni potenziato dall'IA</li><li>Tracciamento finanziario completo (Conteggi Autisti, Fatture Fornitori, Report Agenzie)</li><li>Generazione automatica di Voucher PDF</li></ul>",
+    manual_dashboard_title: "2. Dashboard e Viste Calendario",
+    manual_dashboard_content: "<p>L'interfaccia principale è il <strong>Calendario</strong>. Puoi passare tra tre viste usando i pulsanti in alto a destra:</p><ul><li><strong>Vista Mese:</strong> Panoramica di alto livello. Clicca su un giorno per vedere i dettagli. Trascina i servizi per spostarli.</li><li><strong>Vista Settimana:</strong> Timeline oraria dettagliata. Perfetta per individuare i buchi nel programma.</li><li><strong>Vista Giorno:</strong> Controllo granulare. Trascina e rilascia i servizi per riprogrammare gli orari con precisione.</li></ul><p><strong>Filtri:</strong> Usa il pulsante Filtro (icona imbuto) per filtrare i servizi per Autista, Stato o Tipo di Servizio. Puoi salvare questi set di filtri per un accesso rapido.</p>",
+    manual_services_title: "3. Gestione Servizi",
+    manual_services_content: "<p><strong>Creazione di un Servizio:</strong> Clicca su qualsiasi slot vuoto o sul pulsante '+'. Apparirà una finestra modale dove potrai inserire i dettagli.</p><p><strong>Smart Paste (IA):</strong> Copia il testo completo di un'email o messaggio WhatsApp di prenotazione e clicca su 'Smart Paste'. L'IA estrarrà automaticamente nome cliente, data, ora, percorso, numero di volo e prezzo.</p><p><strong>Modifica/Elimina:</strong> Clicca su un servizio esistente per vedere i dettagli. Usa il pulsante 'Modifica' per apportare cambiamenti o 'Elimina' per spostarlo nel Cestino.</p><p><strong>Drag & Drop:</strong> Nelle viste Settimana e Giorno, puoi trascinare i servizi in orari o giorni diversi. Rilascia un servizio sopra un altro per programmarli contemporaneamente (sovrapposizione).</p>",
+    manual_ai_title: "4. Funzionalità IA",
+    manual_ai_content: "<p>L'applicazione utilizza un'IA avanzata per farti risparmiare tempo.</p><ul><li><strong>Estrattore Prenotazioni:</strong> Converte testo non strutturato in prenotazioni strutturate.</li><li><strong>Assistente Finanziario:</strong> Vai alla scheda Finanze e fai domande come 'Qual è il mio margine di profitto questo mese?' o 'Chi è il mio miglior autista?'.</li><li><strong>Aiuto Manuale:</strong> Usa la barra di ricerca in questo manuale per fare domande in linguaggio naturale su come usare l'app.</li></ul>",
+    manual_fleet_title: "5. Flotta e Autisti",
+    manual_fleet_content: "<p><strong>Autisti:</strong> Gestisci il tuo team nella scheda 'Autisti'. Aggiungi dipendenti interni o partner esterni. Puoi segnare la loro indisponibilità nella sottoscheda 'Disponibilità' (slot neri nel calendario).</p><p><strong>Veicoli:</strong> Gestisci la tua flotta nella scheda 'Veicoli'. Tieni traccia delle scadenze assicurative e delle date di manutenzione. Assegna veicoli agli autisti su base giornaliera tramite la sottoscheda 'Assegnazioni'.</p><p><strong>Fornitori:</strong> Per i lavori esternalizzati, aggiungi aziende nella scheda 'Fornitori'. Puoi quindi assegnare un servizio a un Fornitore invece che a un Autista.</p>",
+    manual_financials_title: "6. Finanze e Contabilità",
+    manual_financials_content: "<p>Questo è il motore dell'app. Traccia il flusso di denaro automaticamente in base ai Metodi di Pagamento.</p><ul><li><strong>Panoramica:</strong> Vedi Entrate, Profitti e Previsioni di Cassa in tempo reale.</li><li><strong>Report Autisti:</strong> Calcola esattamente quanto un autista deve all'ufficio (Contanti incassati) o quanto l'ufficio deve a loro (Stipendio/Commissione).</li><li><strong>Report Fornitori:</strong> Traccia il 'Saldo Netto'. Se affidi lavoro a un partner, e loro affidano lavoro a te, il sistema calcola la differenza così paghi/ricevi solo il saldo.</li><li><strong>Fatture:</strong> Traccia i pagamenti 'Fattura Futura' per Agenzie e Fornitori.</li></ul>",
+    manual_settings_title: "7. Impostazioni e Personalizzazione",
+    manual_settings_content: "<p><strong>Tema:</strong> Passa tra modalità Chiara e Scura.</p><p><strong>Configurazione:</strong> Definisci i tuoi Tipi di Servizio personalizzati (es. 'Matrimonio', 'Tour Vino') e Metodi di Pagamento.</p><p><strong>Branding:</strong> Carica i dettagli della tua azienda. Questi appaiono sui Voucher PDF e sui Report generati dall'app.</p><p><strong>Backup:</strong> Scarica un backup JSON completo dei tuoi dati in qualsiasi momento. Consigliamo di farlo settimanalmente.</p>"
   },
   es: {
-    // ... Existing Keys ...
+    dashboard: "Panel",
+    calendar: "Calendario",
+    drivers: "Conductores",
+    suppliers: "Proveedores",
+    financials: "Finanzas",
+    settings: "Configuración",
     services_list: "Lista de Servicios",
     clients_directory: "Directorio de Clientes",
-    search_services: "Buscar servicios...",
-    total_spend: "Gasto Total",
-    bookings: "Reservas",
-    last_booking: "Última Reserva",
-    client_history: "Historial",
-    no_clients_found: "No se encontraron clientes",
-    services_found: "servicios encontrados",
-    luggage: "Equipaje",
-    luggage_big: "Grandes",
-    luggage_small: "Pequeñas",
-    original_description: "Solicitud Original / Descripción",
-    ask_manual_placeholder: "Pregúntame cómo hacer algo (ej. '¿Cómo agrego un conductor?')",
-    manual_ai_helper_title: "Preguntar al Manual",
-    manual_ai_helper_desc: "Usa la IA para encontrar respuestas instantáneas sobre el funcionamiento de la app.",
-    // ...
+    manual_title: "Manual de Usuario",
+    manual_subtitle: "Documentación completa para administradores.",
+    manual_toc: "Índice",
+    manual_intro_title: "1. Introducción",
+    manual_intro_content: "<p>Bienvenido a <strong>New ChAIffeur Calendar</strong>, la herramienta definitiva para gestionar tu negocio de traslados y tours.</p>",
+    manual_dashboard_title: "2. Panel y Vistas",
+    manual_dashboard_content: "<p>La interfaz principal es el <strong>Calendario</strong>. Puedes cambiar entre tres vistas.</p>",
+    manual_services_title: "3. Gestión de Servicios",
+    manual_services_content: "<p><strong>Crear Servicio:</strong> Clic en un espacio vacío o el botón '+'.</p>",
+    manual_ai_title: "4. Funciones IA",
+    manual_ai_content: "<p>La aplicación usa IA avanzada para ahorrarte tiempo.</p>",
+    manual_fleet_title: "5. Flota y Conductores",
+    manual_fleet_content: "<p>Gestiona tu equipo en la pestaña 'Conductores'.</p>",
+    manual_financials_title: "6. Finanzas",
+    manual_financials_content: "<p>Rastrea el flujo de dinero automáticamente.</p>",
+    manual_settings_title: "7. Configuración",
+    manual_settings_content: "<p>Personaliza tu experiencia con temas y configuraciones.</p>"
   },
   fr: {
-    // ... Existing Keys ...
-    services_list: "Liste des Services",
-    clients_directory: "Répertoire Clients",
-    search_services: "Rechercher des services...",
-    total_spend: "Dépenses Totales",
-    bookings: "Réservations",
-    last_booking: "Dernière Réservation",
-    client_history: "Historique",
-    no_clients_found: "Aucun client trouvé",
-    services_found: "services trouvés",
-    luggage: "Bagages",
-    luggage_big: "Grands",
-    luggage_small: "Petits",
-    original_description: "Demande Originale / Description",
-    ask_manual_placeholder: "Demandez-moi comment faire (ex: 'Comment ajouter un chauffeur?')",
-    manual_ai_helper_title: "Demander au Manuel",
-    manual_ai_helper_desc: "Utilisez l'IA pour trouver des réponses instantanées sur le fonctionnement de l'application.",
-    // ...
+    dashboard: "Tableau de Bord",
+    calendar: "Calendrier",
+    drivers: "Chauffeurs",
+    suppliers: "Fournisseurs",
+    financials: "Finances",
+    settings: "Paramètres",
+    services_list: "Liste Services",
+    clients_directory: "Clients",
+    manual_title: "Manuel Utilisateur",
+    manual_subtitle: "Documentation complète.",
+    manual_toc: "Sommaire",
+    manual_intro_title: "1. Introduction",
+    manual_intro_content: "<p>Bienvenue sur <strong>New ChAIffeur Calendar</strong>.</p>",
+    manual_dashboard_title: "2. Tableau de Bord",
+    manual_dashboard_content: "<p>L'interface principale est le <strong>Calendrier</strong>.</p>",
+    manual_services_title: "3. Gestion des Services",
+    manual_services_content: "<p><strong>Créer un Service:</strong> Cliquez sur un créneau vide.</p>",
+    manual_ai_title: "4. Fonctionnalités IA",
+    manual_ai_content: "<p>L'application utilise une IA avancée.</p>",
+    manual_fleet_title: "5. Flotte et Chauffeurs",
+    manual_fleet_content: "<p>Gérez votre équipe dans l'onglet 'Chauffeurs'.</p>",
+    manual_financials_title: "6. Finances",
+    manual_financials_content: "<p>Suivez les flux financiers automatiquement.</p>",
+    manual_settings_title: "7. Paramètres",
+    manual_settings_content: "<p>Personnalisez l'application.</p>"
   },
   de: {
-    // ... Existing Keys ...
-    services_list: "Dienstleistungsliste",
-    clients_directory: "Kundenverzeichnis",
-    search_services: "Dienste suchen...",
-    total_spend: "Gesamtausgaben",
-    bookings: "Buchungen",
-    last_booking: "Letzte Buchung",
-    client_history: "Verlauf",
-    no_clients_found: "Keine Kunden gefunden",
-    services_found: "Dienste gefunden",
-    luggage: "Gepäck",
-    luggage_big: "Groß",
-    luggage_small: "Klein",
-    original_description: "Originalanfrage / Beschreibung",
-    ask_manual_placeholder: "Fragen Sie mich etwas (z.B. 'Wie füge ich einen Fahrer hinzu?')",
-    manual_ai_helper_title: "Handbuch fragen",
-    manual_ai_helper_desc: "Nutzen Sie KI, um sofortige Antworten zur Funktionsweise der App zu finden.",
-    // ...
+    dashboard: "Dashboard",
+    calendar: "Kalender",
+    drivers: "Fahrer",
+    suppliers: "Lieferanten",
+    financials: "Finanzen",
+    settings: "Einstellungen",
+    services_list: "Dienstleistungen",
+    clients_directory: "Kunden",
+    manual_title: "Benutzerhandbuch",
+    manual_subtitle: "Vollständige Dokumentation.",
+    manual_toc: "Inhalt",
+    manual_intro_title: "1. Einführung",
+    manual_intro_content: "<p>Willkommen bei <strong>New ChAIffeur Calendar</strong>.</p>",
+    manual_dashboard_title: "2. Dashboard & Ansichten",
+    manual_dashboard_content: "<p>Die Hauptoberfläche ist der <strong>Kalender</strong>.</p>",
+    manual_services_title: "3. Dienste verwalten",
+    manual_services_content: "<p><strong>Dienst erstellen:</strong> Klicken Sie auf einen leeren Slot.</p>",
+    manual_ai_title: "4. KI-Funktionen",
+    manual_ai_content: "<p>Die App nutzt fortschrittliche KI.</p>",
+    manual_fleet_title: "5. Flotte & Fahrer",
+    manual_fleet_content: "<p>Verwalten Sie Ihr Team.</p>",
+    manual_financials_title: "6. Finanzen",
+    manual_financials_content: "<p>Verfolgen Sie den Geldfluss.</p>",
+    manual_settings_title: "7. Einstellungen",
+    manual_settings_content: "<p>Passen Sie die App an.</p>"
   }
 };

@@ -39,6 +39,13 @@ export const MonthView: React.FC<MonthViewProps> = ({ weeks, services, currentMo
     newServiceTime.setHours(9, 0, 0, 0);
     onTimeSlotClick(newServiceTime);
   };
+  
+  // Navigate to Day View when clicking a service in Month view
+  const handleServiceClickInMonth = (service: Service) => {
+      onDaySelect(service.startTime);
+      // Trigger switching to Day View by calling the double-click handler
+      onDayDoubleClick(service.startTime);
+  };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
@@ -72,9 +79,9 @@ export const MonthView: React.FC<MonthViewProps> = ({ weeks, services, currentMo
                 onDrop={(e) => handleDrop(e, day)}
                 className={`relative group border-b border-r border-slate-200 dark:border-slate-700 flex flex-col cursor-pointer transition-colors ${dayCellHeight} ${!isCurrentMonth ? 'bg-slate-50/50 dark:bg-slate-900/40 text-slate-400' : 'bg-white dark:bg-slate-900'} hover:bg-slate-50 dark:hover:bg-slate-800/50`}
                 role="button"
-                aria-label={`Create service on ${day.toDateString()}`}
+                aria-label={`View day ${day.toDateString()}`}
               >
-                {/* Date Header - Google Calendar Style (Top Center, Small) */}
+                {/* Date Header */}
                 <div className="flex justify-center pt-1">
                   <span
                     className={`text-[10px] font-medium rounded-full w-5 h-5 flex items-center justify-center transition-colors ${
@@ -94,7 +101,7 @@ export const MonthView: React.FC<MonthViewProps> = ({ weeks, services, currentMo
                         <ServiceItem 
                             key={service.id} 
                             service={service} 
-                            onSelect={onSelectService} 
+                            onSelect={handleServiceClickInMonth} 
                             zoomLevel={zoomLevel}
                             isMonthView={true} // Force compact style for month view
                         />

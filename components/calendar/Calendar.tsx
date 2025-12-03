@@ -174,6 +174,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   const servicesWithExtras = useMemo(() => {
     const leavesAsServices = driverLeaves.map(leave => {
         const driver = drivers.find(d => d.id === leave.driverId);
+        const driverName = driver?.name || 'Driver';
         
         // 5:00 AM - 5:15 AM
         const start = new Date(leave.date);
@@ -183,8 +184,8 @@ export const Calendar: React.FC<CalendarProps> = ({
 
         return {
             id: `leave-${leave.id}`,
-            title: `🚫 ${driver?.name || 'Driver'} (Leave)`, 
-            clientName: 'UNAVAILABLE',
+            title: `🚫 LEAVE: ${driverName}`, // Detailed title
+            clientName: `${driverName} is OFF`, // Displayed in Week/Day view if big enough
             pickupAddress: '',
             dropoffAddress: '',
             startTime: start,
@@ -200,6 +201,8 @@ export const Calendar: React.FC<CalendarProps> = ({
 
     const vehicleReminders = vehicles.flatMap(v => {
         const reminders = [];
+        const vehLabel = `${v.make} ${v.model} (${v.plate})`;
+
         if (v.insuranceExpiry) {
             // 5:15 AM - 5:30 AM
             const start = new Date(v.insuranceExpiry);
@@ -208,8 +211,8 @@ export const Calendar: React.FC<CalendarProps> = ({
             end.setHours(5, 30, 0, 0);
             reminders.push({
                 id: `veh-ins-${v.id}`,
-                title: `⚠️ Insurance: ${v.plate}`,
-                clientName: `${v.make} ${v.model}`,
+                title: `⚠️ INSURANCE EXPIRY: ${vehLabel}`, 
+                clientName: `Insurance Due: ${vehLabel}`,
                 startTime: start,
                 endTime: end,
                 status: ServiceStatus.CONFIRMED,
@@ -227,8 +230,8 @@ export const Calendar: React.FC<CalendarProps> = ({
             end.setHours(5, 45, 0, 0);
             reminders.push({
                 id: `veh-maint-${v.id}`,
-                title: `🔧 Maintenance: ${v.plate}`,
-                clientName: `${v.make} ${v.model}`,
+                title: `🔧 MAINTENANCE DUE: ${vehLabel}`, 
+                clientName: `Service Due: ${vehLabel}`,
                 startTime: start,
                 endTime: end,
                 status: ServiceStatus.CONFIRMED,
@@ -382,26 +385,26 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-slate-900">
-      {/* Header: Dark Template Style Bar */}
-      <div className="flex items-center overflow-x-auto no-scrollbar gap-3 p-3 border-b border-slate-700 bg-[#151e32] text-white flex-nowrap shadow-md z-20">
+      {/* Header: Clean Light/Dark Theme Bar */}
+      <div className="flex items-center overflow-x-auto no-scrollbar gap-3 p-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white flex-nowrap shadow-sm z-20">
         
         {/* Left Controls */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          {/* Today Button (Text, Outlined for Dark Bg) */}
-          <button onClick={goToToday} title={t('today')} className="px-3 py-1.5 text-sm font-medium text-slate-200 border border-slate-600 rounded-lg hover:bg-slate-700 hover:text-white transition-colors flex items-center justify-center">
+          {/* Today Button */}
+          <button onClick={goToToday} title={t('today')} className="px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center justify-center">
              {t('today')}
           </button>
 
-          <div className="flex items-center border border-slate-600 rounded-lg overflow-hidden">
-            <button onClick={goToPrevious} className="p-1.5 hover:bg-slate-700 transition-colors border-r border-slate-600 text-slate-300 hover:text-white">
+          <div className="flex items-center border border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+            <button onClick={goToPrevious} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border-r border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
-            <button onClick={goToNext} className="p-1.5 hover:bg-slate-700 transition-colors text-slate-300 hover:text-white">
+            <button onClick={goToNext} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
           </div>
           
-          <h2 className="ml-2 text-xl font-bold text-white whitespace-nowrap capitalize flex-shrink-0">
+          <h2 className="ml-2 text-xl font-bold text-slate-800 dark:text-white whitespace-nowrap capitalize flex-shrink-0">
             {headerTitle}
           </h2>
         </div>
@@ -418,16 +421,16 @@ export const Calendar: React.FC<CalendarProps> = ({
                             placeholder={t('search_placeholder')}
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
-                            className="w-full py-1.5 px-3 pr-8 text-sm border-none rounded-md bg-slate-700 text-white placeholder-slate-400 focus:ring-2 focus:ring-primary-500"
+                            className="w-full py-1.5 px-3 pr-8 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-primary-500"
                         />
-                        <button onClick={() => { setSearchQuery(''); setIsSearchExpanded(false); }} className="absolute right-1 top-1 text-slate-400 hover:text-white p-1">
+                        <button onClick={() => { setSearchQuery(''); setIsSearchExpanded(false); }} className="absolute right-1 top-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
                 ) : (
                     <button 
                         onClick={handleSearchToggle}
-                        className="p-1.5 rounded-md hover:bg-slate-700 text-slate-400 hover:text-white"
+                        className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400"
                         title="Search"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -435,28 +438,28 @@ export const Calendar: React.FC<CalendarProps> = ({
                 )}
             </div>
 
-            {/* Filter Button: Styled clearly as a button */}
+            {/* Filter Button */}
            <button 
                 onClick={() => setShowFilters(prev => !prev)}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors border ${showFilters ? 'bg-slate-200 text-slate-900 border-slate-200' : 'border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-500'}`}
+                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors border ${showFilters ? 'bg-slate-200 text-slate-900 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600' : 'border-slate-300 text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800'}`}
                 title={t('filters')}
             >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 01 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 <span className="text-sm font-medium">{t('filters')}</span>
                 {activeFilterCount > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3 rounded-full bg-primary-500 ring-2 ring-[#151e32]"></span>
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3 rounded-full bg-primary-500 ring-2 ring-white dark:ring-slate-900"></span>
                 )}
             </button>
 
-            <div className="h-6 w-px bg-slate-600 mx-1 flex-shrink-0"></div>
+            <div className="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1 flex-shrink-0"></div>
 
-            {/* View Switcher (Dark Mode Style) */}
-            <div className="flex items-center bg-slate-800 border border-slate-600 rounded-lg p-0.5 flex-shrink-0">
+            {/* View Switcher */}
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-0.5 flex-shrink-0">
                 {['month', 'week', 'day'].map((v) => (
                     <button 
                         key={v}
                         onClick={() => setView(v as CalendarView)}
-                        className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${view === v ? 'bg-slate-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-700'}`}
+                        className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${view === v ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm border border-slate-200 dark:border-slate-500' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent'}`}
                     >
                         {t(v as any)}
                     </button>
@@ -530,7 +533,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           <>
             {view === 'month' && (
                 <>
-                    {/* Weekday Header - Original Neutral Theme */}
+                    {/* Weekday Header - Adjusted for Light/Dark */}
                     <div className="grid grid-cols-7 border-b border-slate-200 dark:border-slate-700 text-center font-bold text-slate-500 dark:text-slate-400 text-xs uppercase sticky top-0 bg-white dark:bg-slate-900 z-10 shadow-sm">
                         {weekdays.map(day => (
                         <div key={day} className="py-2">{day}</div>

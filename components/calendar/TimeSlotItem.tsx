@@ -12,9 +12,10 @@ interface TimeSlotItemProps {
   startHour?: number;
   timeFormat: '12h' | '24h';
   style?: React.CSSProperties; // New prop for column layout
+  onDropOnService?: (droppedServiceId: string, targetServiceStart: Date) => void;
 }
 
-export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, style }) => {
+export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, style, onDropOnService }) => {
   // Default uniform color for all services (Blue/Indigo style)
   const defaultColorClass = 'bg-blue-50 text-blue-700 border-blue-500 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-400';
 
@@ -50,6 +51,20 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       e.stopPropagation();
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const serviceId = e.dataTransfer.getData('serviceId');
+      if (serviceId && onDropOnService) {
+          onDropOnService(serviceId, service.startTime);
+      }
+  };
+
   return (
     <button
       onClick={(e) => {
@@ -58,6 +73,8 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       }}
       draggable
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
       className={`absolute w-[96%] left-[2%] text-left px-2 py-0.5 rounded-md cursor-grab active:cursor-grabbing hover:brightness-95 hover:shadow-md transition-all z-10 flex flex-col justify-center overflow-hidden shadow-sm border-l-[3px] ${colorClasses} ${isUnassigned ? 'opacity-90 border-dashed border-2 border-amber-400' : ''}`}
       style={{
         ...style,
@@ -67,14 +84,14 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       title={`${service.title} (${formatTime(start, timeFormat)})`}
       aria-label={`Service: ${service.title}`}
     >
-      <div className="font-bold text-xs truncate w-full flex items-center leading-tight">
+      <div className="font-bold text-xs truncate w-full flex items-center leading-tight pointer-events-none">
         {isUnassigned && <span className="text-amber-600 font-extrabold mr-1 text-sm">!</span>}
         {service.title}
       </div>
       
       {/* If we have enough height, show time and client */}
       {showDetails && (
-          <div className="mt-0.5">
+          <div className="mt-0.5 pointer-events-none">
             <div className="text-[10px] font-medium opacity-90 truncate w-full">
                 {formatTime(start, timeFormat)} - {formatTime(end, timeFormat)}
             </div>

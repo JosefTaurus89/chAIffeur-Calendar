@@ -39,10 +39,20 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
       e.preventDefault();
       const serviceId = e.dataTransfer.getData('serviceId');
       if (serviceId) {
+          // Calculate 30-minute snap
+          const offsetY = e.nativeEvent.offsetY;
+          const minutes = (offsetY / timeSlotHeight) * 60;
+          const roundedMinutes = Math.round(minutes / 30) * 30;
+
           const newDate = new Date(day);
-          newDate.setHours(hour, 0, 0, 0);
+          newDate.setHours(hour, roundedMinutes, 0, 0);
           onMoveService(serviceId, newDate);
       }
+  };
+
+  const handleDropOnService = (droppedServiceId: string, targetServiceStart: Date) => {
+      // Move the dropped service to match the target service's start time exactly
+      onMoveService(droppedServiceId, new Date(targetServiceStart));
   };
 
   // Scroll to 6 AM on mount if possible
@@ -88,6 +98,9 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
             aria-label={`Create a new service at ${hour}:00`}
             style={{ height: `${timeSlotHeight}px` }}
           >
+             {/* Half-hour guide line */}
+             <div className="absolute top-1/2 left-0 right-0 border-t border-slate-50 dark:border-slate-800 opacity-0 group-hover:opacity-50 pointer-events-none"></div>
+
              {/* Visual Hint on Hover */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                  <div className="flex items-center text-primary-600 dark:text-primary-400 font-semibold text-sm bg-white/80 dark:bg-slate-900/80 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm">
@@ -115,6 +128,7 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
                             startHour={startHour}
                             timeFormat={settings.timeFormat}
                             style={style}
+                            onDropOnService={handleDropOnService}
                         />
                     </div>
                 );

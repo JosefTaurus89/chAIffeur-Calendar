@@ -50,10 +50,20 @@ const DayColumn: React.FC<{
       e.preventDefault();
       const serviceId = e.dataTransfer.getData('serviceId');
       if (serviceId) {
+          // Calculate 30-minute snap
+          const offsetY = e.nativeEvent.offsetY;
+          const minutes = (offsetY / timeSlotHeight) * 60;
+          const roundedMinutes = Math.round(minutes / 30) * 30;
+
           const newDate = new Date(day);
-          newDate.setHours(hour, 0, 0, 0);
+          newDate.setHours(hour, roundedMinutes, 0, 0);
           onMoveService(serviceId, newDate);
       }
+  };
+
+  const handleDropOnService = (droppedServiceId: string, targetServiceStart: Date) => {
+      // Move the dropped service to match the target service's start time exactly
+      onMoveService(droppedServiceId, new Date(targetServiceStart));
   };
 
   return (
@@ -70,13 +80,16 @@ const DayColumn: React.FC<{
             role="button"
             aria-label={`Create a new service on ${day.toDateString()} at ${hour}:00`}
         >
+             {/* Half-hour guide line (invisible unless hovered or needed) */}
+             <div className="absolute top-1/2 left-0 right-0 border-t border-slate-50 dark:border-slate-800 opacity-0 group-hover:opacity-50 pointer-events-none"></div>
+
              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             </div>
         </div>
       ))}
       
-      {/* Events Overlay */}
+      {/* Events Overlay - with pointer-events-none on container so clicks/drops pass through to grid where no event exists */}
       <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none">
         <div className="relative w-full h-full">
             {positionedServices.map(({ service, style }) => {
@@ -91,6 +104,7 @@ const DayColumn: React.FC<{
                         startHour={startHour}
                         timeFormat={timeFormat}
                         style={style}
+                        onDropOnService={handleDropOnService}
                     />
                 </div>
             );
