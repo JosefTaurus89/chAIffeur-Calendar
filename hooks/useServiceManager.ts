@@ -57,7 +57,7 @@ export const useServiceManager = () => {
         fontStyle: 'inter',
         defaultView: 'calendar',
         defaultServiceDuration: 60,
-        autoSyncGoogleCalendar: true, // Default set to TRUE
+        autoSyncGoogleCalendar: false,
         currency: 'EUR', // Changed default to EUR
         timeFormat: '12h',
         calendarStartHour: 0,
@@ -72,7 +72,7 @@ export const useServiceManager = () => {
             [ServiceType.TOUR]: { label: 'Tour / Hourly', color: 'emerald' },
             [ServiceType.CUSTOM]: { label: 'Custom / Event', color: 'fuchsia' },
         },
-        companyName: 'NCC: New ChAIffeur Calendar',
+        companyName: 'New ChAIffeur Services',
         companyAddress: '',
         companyPhone: '',
         companyEmail: '',

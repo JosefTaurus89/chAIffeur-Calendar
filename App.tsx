@@ -3,6 +3,8 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Calendar } from './components/calendar/Calendar';
 import { ServiceModal } from './components/service/ServiceModal';
 import { ServiceDetailModal } from './components/service/ServiceDetailModal';
+import { ServiceList } from './components/services/ServiceList';
+import { ClientList } from './components/clients/ClientList';
 import { Service, View, UserProfile, User, ServiceStatus, ServiceType, PaymentStatus } from './types';
 import { useServiceManager } from './hooks/useServiceManager';
 import { Navbar } from './components/layout/Navbar';
@@ -321,7 +323,7 @@ const App: React.FC = () => {
   const renderView = () => {
     if (view === 'manual') return <UserManual settings={settings} />;
 
-    if (userRole !== 'ADMIN' && (view === 'financials' || view === 'suppliers' || view === 'settings' || view === 'vehicles')) {
+    if (userRole !== 'ADMIN' && (view === 'financials' || view === 'suppliers' || view === 'settings' || view === 'vehicles' || view === 'services' || view === 'clients')) {
         setTimeout(() => setView('calendar'), 0);
         return null;
     }
@@ -352,6 +354,19 @@ const App: React.FC = () => {
                   drivers={drivers}
                   assignments={vehicleAssignments}
                   onSaveAssignment={saveVehicleAssignment}
+                />;
+      case 'services':
+        return <ServiceList
+                  services={services}
+                  onSelectService={handleSelectService}
+                  settings={settings}
+                  drivers={drivers}
+                />;
+      case 'clients':
+        return <ClientList
+                  services={services}
+                  settings={settings}
+                  onSelectService={handleSelectService}
                 />;
       case 'financials':
         return <FinancialsManagement services={services} drivers={drivers} suppliers={suppliers} settings={settings} />;

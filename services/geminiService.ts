@@ -182,3 +182,38 @@ export const getFinancialInsights = async (financialData: any, query: string): P
         throw new Error("Failed to get insights from AI service.");
     }
 };
+
+export const askManualQuestion = async (query: string, manualContent: string): Promise<string | null> => {
+    if (!process.env.API_KEY) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return `Mock AI Response: I cannot access the API Key. In a real scenario, I would answer: "${query}" using the manual.`;
+    }
+
+    const prompt = `
+        You are the helpful, expert AI assistant for the 'New ChAIffeur Calendar' application.
+        Your goal is to help the user understand how to use the app based on the User Manual provided below.
+        
+        Guidelines:
+        1. Answer strictly based on the MANUAL CONTENT provided.
+        2. Keep answers concise, friendly, and step-by-step if explaining a process.
+        3. If the answer isn't in the manual, say "I couldn't find that in the manual, but generally..." and provide a best guess based on standard transfer management apps.
+        
+        MANUAL CONTENT:
+        ${manualContent}
+        
+        USER QUESTION:
+        ${query}
+    `;
+
+    try {
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: prompt,
+        });
+        return response.text.trim();
+    } catch (error) {
+        console.error("Error calling Gemini API for manual:", error);
+        return "I'm sorry, I encountered an error while processing your request. Please try again.";
+    }
+};

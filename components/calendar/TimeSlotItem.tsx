@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Service, DriverAvailability } from '../../types';
 import { EVENT_COLORS } from '../../constants';
@@ -10,11 +11,10 @@ interface TimeSlotItemProps {
   driverAvailability?: DriverAvailability;
   startHour?: number;
   timeFormat: '12h' | '24h';
-  left?: number;  // Percentage 0-100
-  width?: number; // Percentage 0-100
+  style?: React.CSSProperties; // New prop for column layout
 }
 
-export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, left = 0, width = 96 }) => {
+export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, style }) => {
   // Default uniform color for all services (Blue/Indigo style)
   const defaultColorClass = 'bg-blue-50 text-blue-700 border-blue-500 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-400';
 
@@ -26,8 +26,8 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
 
   const isUnassigned = !service.driverId && !service.supplierId;
 
-  const start = new Date(service.startTime);
-  const end = service.endTime ? new Date(service.endTime) : new Date(start.getTime() + 60 * 60 * 1000); // Default to 1 hour if no end time
+  const start = service.startTime;
+  const end = service.endTime || new Date(start.getTime() + 60 * 60 * 1000); // Default to 1 hour if no end time
 
   const startInHours = start.getHours() + start.getMinutes() / 60;
   // adjust for custom start hour of the calendar grid
@@ -50,12 +50,6 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       e.stopPropagation();
   };
 
-  // Adjust width slightly to create a gap between columns if multiple
-  // If width is 100% (single column), make it 96% to leave room.
-  // If width is split (e.g. 50%), make it slightly less (e.g. 48%) to show separation.
-  const displayWidth = width > 90 ? 96 : (width - 1);
-  const displayLeft = width > 90 ? 2 : left;
-
   return (
     <button
       onClick={(e) => {
@@ -64,12 +58,11 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       }}
       draggable
       onDragStart={handleDragStart}
-      className={`absolute text-left px-1.5 py-0.5 rounded-md cursor-grab active:cursor-grabbing hover:brightness-95 hover:shadow-md transition-all z-10 flex flex-col justify-center overflow-hidden shadow-sm border-l-[3px] ${colorClasses} ${isUnassigned ? 'opacity-90 border-dashed border-2 border-amber-400' : ''}`}
+      className={`absolute w-[96%] left-[2%] text-left px-2 py-0.5 rounded-md cursor-grab active:cursor-grabbing hover:brightness-95 hover:shadow-md transition-all z-10 flex flex-col justify-center overflow-hidden shadow-sm border-l-[3px] ${colorClasses} ${isUnassigned ? 'opacity-90 border-dashed border-2 border-amber-400' : ''}`}
       style={{
+        ...style,
         top: `${top}px`,
         height: `${finalHeight}px`,
-        left: `${displayLeft}%`,
-        width: `${displayWidth}%`
       }}
       title={`${service.title} (${formatTime(start, timeFormat)})`}
       aria-label={`Service: ${service.title}`}

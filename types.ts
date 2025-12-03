@@ -1,6 +1,6 @@
 
 // FIX: Centralize the 'View' type to be used across the application for consistency.
-export type View = 'calendar' | 'drivers' | 'vehicles' | 'suppliers' | 'financials' | 'settings' | 'manual';
+export type View = 'calendar' | 'drivers' | 'vehicles' | 'suppliers' | 'financials' | 'settings' | 'manual' | 'services' | 'clients';
 
 export enum ServiceStatus {
   PENDING = 'PENDING',

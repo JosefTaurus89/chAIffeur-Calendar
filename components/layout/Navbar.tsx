@@ -61,12 +61,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
       );
   };
 
-  // Force the new name if the setting is still the old default, otherwise use the setting or the new default.
-  const defaultName = 'NCC: New ChAIffeur Calendar';
-  const displayCompanyName = (settings.companyName === 'New ChAIffeur Services' || !settings.companyName)
-      ? defaultName
-      : settings.companyName;
-
   return (
     <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40 shadow-sm print:hidden">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,11 +78,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                         <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
                     </svg>
                 </div>
-                <div>
+                <div className="hidden md:block">
                     <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight">
-                        {displayCompanyName}
+                        {settings.companyName || 'NCC Calendar'}
                     </h1>
-                    <p className="hidden md:block text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
                 </div>
             </div>
           </div>
@@ -100,6 +94,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                 label={t('calendar')} 
                 icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>}
             />
+            {isAdmin && (
+                <>
+                    <NavItem 
+                        view="services" 
+                        label={t('services_list')} 
+                        icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>}
+                    />
+                    <NavItem 
+                        view="clients" 
+                        label={t('clients_directory')} 
+                        icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>}
+                    />
+                </>
+            )}
             <NavItem 
                 view="drivers" 
                 label={userRole === 'DRIVER' ? "My Agenda" : t('drivers')} 
@@ -190,6 +198,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                     label={t('calendar')} 
                     icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>}
                 />
+                {isAdmin && (
+                    <>
+                        <MobileNavItem 
+                            view="services" 
+                            label={t('services_list')} 
+                            icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>}
+                        />
+                        <MobileNavItem 
+                            view="clients" 
+                            label={t('clients_directory')} 
+                            icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>}
+                        />
+                    </>
+                )}
                 <MobileNavItem 
                     view="drivers" 
                     label={userRole === 'DRIVER' ? "My Agenda" : t('drivers')} 
