@@ -15,9 +15,10 @@ interface NavbarProps {
   settings: AppSettings;
   isInstallable?: boolean;
   onInstallClick?: () => void;
+  calendarTitle?: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn, user, onSignIn, onSignOut, language, userRole, settings, isInstallable, onInstallClick }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn, user, onSignIn, onSignOut, language, userRole, settings, isInstallable, onInstallClick, calendarTitle }) => {
   const { t } = useTranslation(language);
   const isAdmin = userRole === 'ADMIN';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,23 +67,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           
-          {/* Left: Logo & Title */}
+          {/* Left: Logo & Title & Date */}
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer" onClick={() => handleNavClick('calendar')}>
-                {/* Elegant Minimal Calendar Icon */}
-                <div className="relative w-8 h-8 flex items-center justify-center bg-primary-600 rounded-lg shadow-md text-white">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" strokeWidth="2" />
-                        <line x1="16" y1="2" x2="16" y2="6" strokeWidth="2" />
-                        <line x1="8" y1="2" x2="8" y2="6" strokeWidth="2" />
-                        <line x1="3" y1="10" x2="21" y2="10" strokeWidth="2" />
-                    </svg>
+                {/* Dynamic Date Icon */}
+                <div className="relative w-10 h-10 flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden group hover:shadow-md transition-shadow">
+                    <div className="w-full h-3 bg-primary-600 group-hover:bg-primary-500 transition-colors"></div>
+                    <div className="flex-1 flex items-center justify-center">
+                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-none pt-0.5">{new Date().getDate()}</span>
+                    </div>
                 </div>
+                
                 <div className="hidden md:block">
                     <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight">
                         {settings.companyName || 'NCC Calendar'}
                     </h1>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
+                    {currentView === 'calendar' && calendarTitle ? (
+                        <p className="text-sm font-bold text-primary-600 dark:text-primary-400 leading-none mt-0.5">{calendarTitle}</p>
+                    ) : (
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
+                    )}
                 </div>
             </div>
           </div>

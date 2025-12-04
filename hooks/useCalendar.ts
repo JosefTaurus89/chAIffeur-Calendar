@@ -4,7 +4,22 @@ import { getMonthDays, getWeekDays } from '../lib/calendar-utils';
 
 export type CalendarView = 'month' | 'week' | 'day';
 
-export const useCalendar = (initialDate = new Date(), language = 'en') => {
+export interface CalendarState {
+    currentDate: Date;
+    setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+    selectedDate: Date;
+    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+    view: CalendarView;
+    setView: React.Dispatch<React.SetStateAction<CalendarView>>;
+    weeks: Date[][];
+    weekDays: Date[];
+    headerTitle: string;
+    goToNext: () => void;
+    goToPrevious: () => void;
+    goToToday: () => void;
+}
+
+export const useCalendar = (initialDate = new Date(), language = 'en'): CalendarState => {
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [view, setView] = useState<CalendarView>('month');

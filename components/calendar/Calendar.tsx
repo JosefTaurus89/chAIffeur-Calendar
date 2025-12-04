@@ -1,7 +1,7 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Service, FilterCriteria, SavedFilter, User, Supplier, ServiceType, ServiceStatus, AppSettings, DriverLeave, Vehicle } from '../../types';
-import { useCalendar, CalendarView } from '../../hooks/useCalendar';
+import { CalendarView, CalendarState } from '../../hooks/useCalendar';
 import { MonthView } from './MonthView';
 import { WeekView } from './WeekView';
 import { DayView } from './DayView';
@@ -22,6 +22,7 @@ interface CalendarProps {
   userRole: 'ADMIN' | 'DRIVER' | 'PARTNER';
   onUpdateService: (service: Service) => void;
   onAddService?: () => void;
+  calendarState: CalendarState;
 }
 
 const FilterCheckbox: React.FC<{id: string, label: string, isChecked: boolean, onChange: () => void}> = ({id, label, isChecked, onChange}) => (
@@ -118,7 +119,8 @@ export const Calendar: React.FC<CalendarProps> = ({
     driverLeaves = [],
     userRole,
     onUpdateService,
-    onAddService
+    onAddService,
+    calendarState
 }) => {
   const { 
     currentDate,
@@ -133,7 +135,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     goToToday,
     view,
     setView
-  } = useCalendar(new Date(), settings.language);
+  } = calendarState;
 
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState<FilterCriteria>({});
@@ -404,9 +406,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             </button>
           </div>
           
-          <h2 className="ml-2 text-xl font-bold text-slate-800 dark:text-white whitespace-nowrap capitalize flex-shrink-0">
-            {headerTitle}
-          </h2>
+          {/* REMOVED H2 TITLE - Moved to Navbar */}
         </div>
 
         {/* Right Controls */}

@@ -21,6 +21,7 @@ import { fetchIncomingGoogleEvents } from './services/googleCalendarService';
 import { extractReservationDetails } from './services/geminiService';
 import { useTranslation } from './hooks/useTranslation';
 import { usePWAInstall } from './hooks/usePWAInstall';
+import { useCalendar } from './hooks/useCalendar';
 
 const App: React.FC = () => {
   const { 
@@ -48,6 +49,9 @@ const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false); 
+
+  // Lifted Calendar State
+  const calendarState = useCalendar(new Date(), settings.language);
 
   // Determine the current app user role based on the logged-in email or default to ADMIN for the main user
   const currentUser: User | undefined = useMemo(() => {
@@ -399,6 +403,7 @@ const App: React.FC = () => {
             userRole={userRole}
             onUpdateService={saveService}
             onAddService={handleAddServiceClick}
+            calendarState={calendarState}
           />
         );
     }
@@ -427,6 +432,7 @@ const App: React.FC = () => {
         settings={settings}
         isInstallable={isInstallable}
         onInstallClick={install}
+        calendarTitle={calendarState.headerTitle}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-slate-900">

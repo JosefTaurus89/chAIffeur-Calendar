@@ -50,21 +50,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, isLogged
 
   return (
     <div className="flex flex-col w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 h-full print:hidden">
-      {/* Updated Header with Icon */}
-      <div className="flex flex-col items-center justify-center py-8 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-        <div className="relative w-16 h-16 mb-3">
-            {/* Calendar Icon Base */}
-            <div className="absolute inset-0 bg-white rounded-2xl shadow-md border border-slate-100 flex flex-col items-center overflow-hidden">
-                <div className="w-full h-5 bg-primary-600"></div>
-                <div className="flex-1 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-slate-800">{new Date().getDate()}</span>
-                </div>
-            </div>
-            {/* Decorative Rings */}
-            <div className="absolute -top-1 left-3 w-1.5 h-3 bg-slate-300 rounded-full border-2 border-white z-10"></div>
-            <div className="absolute -top-1 right-3 w-1.5 h-3 bg-slate-300 rounded-full border-2 border-white z-10"></div>
-        </div>
-        
+      {/* Header - Date removed as it moved to Navbar */}
+      <div className="flex flex-col items-center justify-center py-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
         <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100 text-center tracking-tight">
           <span className="text-primary-600">NCC</span> Calendar
         </h1>
