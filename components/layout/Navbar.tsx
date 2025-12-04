@@ -68,31 +68,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
         <div className="flex justify-between h-16">
           
           {/* Left: Logo & Title & Date */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer" onClick={() => handleNavClick('calendar')}>
+          <div className="flex items-center flex-1 min-w-0 mr-2">
+            <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer min-w-0" onClick={() => handleNavClick('calendar')}>
                 {/* Dynamic Date Icon */}
-                <div className="relative w-10 h-10 flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden group hover:shadow-md transition-shadow">
+                <div className="relative w-10 h-10 flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden group hover:shadow-md transition-shadow flex-shrink-0">
                     <div className="w-full h-3 bg-primary-600 group-hover:bg-primary-500 transition-colors"></div>
                     <div className="flex-1 flex items-center justify-center">
                         <span className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-none pt-0.5">{new Date().getDate()}</span>
                     </div>
                 </div>
                 
-                <div className="hidden md:block">
-                    <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight">
+                <div className="flex flex-col justify-center min-w-0">
+                    <h1 className="text-sm md:text-lg font-bold text-slate-900 dark:text-white leading-none tracking-tight truncate">
                         {settings.companyName || 'NCC Calendar'}
                     </h1>
                     {currentView === 'calendar' && calendarTitle ? (
-                        <p className="text-sm font-bold text-primary-600 dark:text-primary-400 leading-none mt-0.5">{calendarTitle}</p>
+                        <p className="text-xs md:text-sm font-bold text-primary-600 dark:text-primary-400 leading-none mt-1 md:mt-0.5 truncate">{calendarTitle}</p>
                     ) : (
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold">Management</p>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-semibold hidden sm:block">Management</p>
                     )}
                 </div>
             </div>
           </div>
 
           {/* Center: Desktop Navigation (Icons Only) */}
-          <div className="hidden md:flex items-center space-x-1 overflow-x-auto no-scrollbar">
+          <div className="hidden md:flex items-center space-x-1 overflow-x-auto no-scrollbar flex-shrink-0 ml-auto">
             <NavItem 
                 view="calendar" 
                 label={t('calendar')} 
@@ -191,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
           </div>
 
           {/* Right: Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden ml-auto">
             <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"

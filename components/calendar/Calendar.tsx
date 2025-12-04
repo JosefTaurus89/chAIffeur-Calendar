@@ -438,21 +438,6 @@ export const Calendar: React.FC<CalendarProps> = ({
                 )}
             </div>
 
-            {/* Filter Button */}
-           <button 
-                onClick={() => setShowFilters(prev => !prev)}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors border ${showFilters ? 'bg-slate-200 text-slate-900 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600' : 'border-slate-300 text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800'}`}
-                title={t('filters')}
-            >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 01 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-                <span className="text-sm font-medium">{t('filters')}</span>
-                {activeFilterCount > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3 rounded-full bg-primary-500 ring-2 ring-white dark:ring-slate-900"></span>
-                )}
-            </button>
-
-            <div className="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-1 flex-shrink-0"></div>
-
             {/* View Switcher */}
             <div className="flex items-center bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-0.5 flex-shrink-0">
                 {['month', 'week', 'day'].map((v) => (
