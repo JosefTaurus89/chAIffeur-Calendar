@@ -30,7 +30,8 @@ const DayColumn: React.FC<{
   startHour: number;
   endHour: number;
   timeFormat: '12h' | '24h';
-}> = ({ day, services, isSelected, onSelectService, onTimeSlotClick, onMoveService, timeSlotHeight, drivers, startHour, endHour, timeFormat }) => {
+  locale: string;
+}> = ({ day, services, isSelected, onSelectService, onTimeSlotClick, onMoveService, timeSlotHeight, drivers, startHour, endHour, timeFormat, locale }) => {
   const servicesForDay = services.filter(service => isSameDay(service.startTime, day));
   const positionedServices = organizeEventsForDay(servicesForDay);
   const hours = getHours(startHour, endHour);
@@ -105,6 +106,7 @@ const DayColumn: React.FC<{
                         timeFormat={timeFormat}
                         style={style}
                         onDropOnService={handleDropOnService}
+                        locale={locale}
                     />
                 </div>
             );
@@ -122,6 +124,8 @@ export const WeekView: React.FC<WeekViewProps> = ({ days, services, selectedDate
   const startHour = settings.calendarStartHour ?? 0;
   const endHour = settings.calendarEndHour ?? 24;
   const hours = getHours(startHour, endHour);
+  const localeMap: Record<string, string> = { en: 'en-US', it: 'it-IT', es: 'es-ES', fr: 'fr-FR', de: 'de-DE' };
+  const locale = localeMap[settings.language] || 'en-US';
   
   // Scroll to 6 AM on mount if possible
   useEffect(() => {
@@ -142,15 +146,13 @@ export const WeekView: React.FC<WeekViewProps> = ({ days, services, selectedDate
       const names = [];
       const d = new Date();
       d.setDate(d.getDate() - d.getDay()); // Start Sunday
-      const localeMap: Record<string, string> = { en: 'en-US', it: 'it-IT', es: 'es-ES', fr: 'fr-FR', de: 'de-DE' };
-      const locale = localeMap[settings.language] || 'en-US';
 
       for(let i=0; i<7; i++) {
           names.push(d.toLocaleString(locale, { weekday: 'short' }));
           d.setDate(d.getDate() + 1);
       }
       return names;
-  }, [settings.language]);
+  }, [locale]);
 
   return (
     <div className="flex flex-col h-full">
@@ -179,15 +181,19 @@ export const WeekView: React.FC<WeekViewProps> = ({ days, services, selectedDate
       >
         {/* Time column */}
         <div className="border-r border-slate-100 dark:border-slate-800 text-right pr-3 pt-2 bg-white dark:bg-slate-900 sticky left-0 z-20">
-          {hours.map(hour => (
-            <div key={hour} className="relative" style={{ height: `${timeSlotHeight}px` }}>
-                <span className="text-xs font-medium text-slate-400 dark:text-slate-500 absolute -top-3 right-0">
-                    {settings.timeFormat === '24h' 
-                        ? `${hour}:00` 
-                        : (hour === 12 ? '12 PM' : (hour > 12 ? `${hour-12} PM` : (hour === 0 || hour === 24 ? '12 AM' : `${hour} AM`)))}
-                </span>
-            </div>
-          ))}
+          {hours.map(hour => {
+            const timeLabel = new Date();
+            timeLabel.setHours(hour, 0, 0, 0);
+            const label = timeLabel.toLocaleTimeString(locale, { hour: 'numeric', hour12: settings.timeFormat === '12h' });
+            
+            return (
+                <div key={hour} className="relative" style={{ height: `${timeSlotHeight}px` }}>
+                    <span className="text-xs font-medium text-slate-400 dark:text-slate-500 absolute -top-3 right-0">
+                        {label}
+                    </span>
+                </div>
+            );
+          })}
         </div>
 
         {/* Day columns */}
@@ -205,6 +211,7 @@ export const WeekView: React.FC<WeekViewProps> = ({ days, services, selectedDate
             startHour={startHour}
             endHour={endHour}
             timeFormat={settings.timeFormat}
+            locale={locale}
           />
         ))}
       </div>

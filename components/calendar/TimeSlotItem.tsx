@@ -13,9 +13,10 @@ interface TimeSlotItemProps {
   timeFormat: '12h' | '24h';
   style?: React.CSSProperties; // New prop for column layout
   onDropOnService?: (droppedServiceId: string, targetServiceStart: Date) => void;
+  locale?: string;
 }
 
-export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, style, onDropOnService }) => {
+export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, timeSlotHeight, startHour = 0, timeFormat, style, onDropOnService, locale = 'en-US' }) => {
   // Default uniform color for all services (Blue/Indigo style)
   const defaultColorClass = 'bg-blue-50 text-blue-700 border-blue-500 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-400';
 
@@ -81,7 +82,7 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
         top: `${top}px`,
         height: `${finalHeight}px`,
       }}
-      title={`${service.title} (${formatTime(start, timeFormat)})`}
+      title={`${service.title} (${formatTime(start, timeFormat, locale)})`}
       aria-label={`Service: ${service.title}`}
     >
       <div className="font-bold text-xs truncate w-full flex items-center leading-tight pointer-events-none">
@@ -93,7 +94,7 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({ service, onSelect, t
       {showDetails && (
           <div className="mt-0.5 pointer-events-none">
             <div className="text-[10px] font-medium opacity-90 truncate w-full">
-                {formatTime(start, timeFormat)} - {formatTime(end, timeFormat)}
+                {formatTime(start, timeFormat, locale)} - {formatTime(end, timeFormat, locale)}
             </div>
             <div className="text-[10px] font-normal truncate opacity-80 w-full border-t border-current mt-0.5 pt-0.5">
                 {service.clientName}

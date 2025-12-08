@@ -2,6 +2,7 @@
 import React from 'react';
 import { Service } from '../../types';
 import { EVENT_COLORS } from '../../constants';
+import { formatTime } from '../../lib/calendar-utils';
 
 interface ServiceItemProps {
   service: Service;
@@ -9,9 +10,10 @@ interface ServiceItemProps {
   zoomLevel: number;
   timeFormat?: '12h' | '24h';
   isMonthView?: boolean;
+  locale?: string;
 }
 
-export const ServiceItem: React.FC<ServiceItemProps> = ({ service, onSelect, isMonthView }) => {
+export const ServiceItem: React.FC<ServiceItemProps> = ({ service, onSelect, isMonthView, timeFormat, locale = 'en-US' }) => {
   // Default uniform color for all services
   const defaultColorClass = 'bg-blue-50 text-blue-700 border-blue-500 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-400';
   
@@ -46,6 +48,7 @@ export const ServiceItem: React.FC<ServiceItemProps> = ({ service, onSelect, isM
             title={`${service.title} - ${service.clientName}`}
         >
             <span className="font-semibold truncate block">
+                <span className="mr-1 opacity-75">{formatTime(service.startTime, timeFormat, locale)}</span>
                 {service.title}
             </span>
         </button>
@@ -70,6 +73,7 @@ export const ServiceItem: React.FC<ServiceItemProps> = ({ service, onSelect, isM
       title={`${service.title} - ${service.clientName}`}
     >
       <span className="font-semibold truncate block">
+        <span className="mr-1 font-mono opacity-90">{formatTime(service.startTime, timeFormat, locale)}</span>
         {service.title}
       </span>
     </button>

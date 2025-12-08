@@ -70,11 +70,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
           {/* Left: Logo & Title & Date */}
           <div className="flex items-center flex-1 min-w-0 mr-2">
             <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer min-w-0" onClick={() => handleNavClick('calendar')}>
-                {/* Dynamic Date Icon */}
+                {/* Calendar Statistic Logo */}
                 <div className="relative w-10 h-10 flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden group hover:shadow-md transition-shadow flex-shrink-0">
                     <div className="w-full h-3 bg-primary-600 group-hover:bg-primary-500 transition-colors"></div>
-                    <div className="flex-1 flex items-center justify-center">
-                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-none pt-0.5">{new Date().getDate()}</span>
+                    <div className="flex-1 flex items-end justify-center gap-1 pb-1.5 w-full">
+                        <div className="w-1.5 h-2 bg-slate-300 dark:bg-slate-600 rounded-t-[1px]"></div>
+                        <div className="w-1.5 h-3 bg-primary-300 dark:bg-primary-700 rounded-t-[1px]"></div>
+                        <div className="w-1.5 h-4 bg-primary-600 dark:bg-primary-500 rounded-t-[1px]"></div>
                     </div>
                 </div>
                 
@@ -260,8 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView, isLoggedIn
                                 // Sedan Car Icon
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 012-2v0a2 2 0 012 2m9 0a2 2 0 012-2v0a2 2 0 012 2" />
-                                </svg>
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 012-2v0a2 2 0 012 2m9 0a2 2 0 012-2v0a2 2 0 012 2"></path></svg>
                             }
                         />
                         <MobileNavItem 

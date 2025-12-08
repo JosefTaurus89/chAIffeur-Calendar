@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from 'react';
 import { Service, ServiceStatus, User, Supplier, ServiceType, PaymentStatus, AppSettings } from '../../types';
 import { AIFinancialAssistant } from './AIFinancialAssistant';
@@ -7,6 +6,7 @@ import { InvoiceManagement } from './InvoiceManagement';
 import { AgencyReports } from './AgencyReports';
 import { DirectBookingReports } from './DirectBookingReports';
 import { useTranslation } from '../../hooks/useTranslation';
+import { printReport } from '../../lib/print-utils';
 
 interface FinancialsManagementProps {
   services: Service[];
@@ -450,6 +450,68 @@ export const FinancialsManagement: React.FC<FinancialsManagementProps> = ({ serv
         {label}
     </button>
   );
+
+  const handlePrintMonthReport = (monthKey: string, monthData: any) => {
+    const [year, month] = monthKey.split('-');
+    const locale = getLocale();
+    const monthName = new Date(Number(year), Number(month) - 1).toLocaleString(locale, { month: 'long', year: 'numeric' });
+
+    const headers = [
+        t('date'), 
+        t('service'), 
+        t('type'), 
+        t('payment_method'), 
+        t('client_price'), 
+        t('supplier_cost'), 
+        t('extras'), 
+        t('profit')
+    ];
+
+    const filteredServices = monthData.services.filter((s: Service) => {
+        if (reportFilterMethod === 'ALL') return true;
+        if (reportFilterMethod === 'Cash') return s.paymentMethod === 'Cash';
+        if (reportFilterMethod === 'Card/Bank') return s.paymentMethod !== 'Cash';
+        return true;
+    });
+
+    const rows = filteredServices.map((s: Service) => {
+        const profit = (s.clientPrice || 0) - (s.supplierCost || 0) + (s.extrasAmount || 0);
+        return [
+            new Date(s.startTime).toLocaleDateString(locale),
+            s.title,
+            s.serviceType,
+            s.paymentMethod || '-',
+            formatCurrencyExact(s.clientPrice || 0),
+            formatCurrencyExact(s.supplierCost || 0),
+            formatCurrencyExact(s.extrasAmount || 0),
+            formatCurrencyExact(profit)
+        ];
+    });
+
+    const totalRev = filteredServices.reduce((sum: number, s: Service) => sum + (s.clientPrice || 0), 0);
+    const totalCost = filteredServices.reduce((sum: number, s: Service) => sum + (s.supplierCost || 0), 0);
+    const totalExtra = filteredServices.reduce((sum: number, s: Service) => sum + (s.extrasAmount || 0), 0);
+    const totalProfit = totalRev - totalCost + totalExtra;
+
+    rows.push([
+        "", "", "", "TOTALS",
+        `<b>${formatCurrencyExact(totalRev)}</b>`,
+        `<b>${formatCurrencyExact(totalCost)}</b>`,
+        `<b>${formatCurrencyExact(totalExtra)}</b>`,
+        `<b>${formatCurrencyExact(totalProfit)}</b>`
+    ]);
+
+    printReport(
+        `${t('monthly_reports')} - ${monthName}`,
+        `Filter: ${reportFilterMethod}`,
+        [
+            { label: t('total_billed'), value: formatCurrencyExact(totalRev) },
+            { label: t('profit'), value: formatCurrencyExact(totalProfit) }
+        ],
+        headers,
+        rows
+    );
+  };
   
   return (
     <div className="p-4 sm:p-6 h-full flex flex-col overflow-y-auto bg-slate-50 dark:bg-slate-900">
@@ -683,15 +745,26 @@ export const FinancialsManagement: React.FC<FinancialsManagementProps> = ({ serv
                                             <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                                                 <div className="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
                                                      <h4 className="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Service Log</h4>
-                                                     <select 
-                                                        value={reportFilterMethod}
-                                                        onChange={(e) => setReportFilterMethod(e.target.value)}
-                                                        className="text-xs bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg shadow-sm py-1 pl-2 pr-8 focus:ring-primary-500 focus:border-primary-500"
-                                                     >
-                                                         <option value="ALL">All Methods</option>
-                                                         <option value="Cash">Cash Only</option>
-                                                         <option value="Card/Bank">Card / Bank</option>
-                                                     </select>
+                                                     <div className="flex items-center gap-2">
+                                                         <button 
+                                                            onClick={(e) => { e.stopPropagation(); handlePrintMonthReport(monthKey, monthData); }}
+                                                            className="flex items-center px-3 py-1 text-xs font-bold text-slate-600 bg-white border border-slate-300 rounded shadow-sm hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600"
+                                                            title="Print Log"
+                                                         >
+                                                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                                            Print
+                                                         </button>
+                                                         <select 
+                                                            value={reportFilterMethod}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            onChange={(e) => setReportFilterMethod(e.target.value)}
+                                                            className="text-xs bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg shadow-sm py-1 pl-2 pr-8 focus:ring-primary-500 focus:border-primary-500"
+                                                         >
+                                                             <option value="ALL">All Methods</option>
+                                                             <option value="Cash">Cash Only</option>
+                                                             <option value="Card/Bank">Card / Bank</option>
+                                                         </select>
+                                                     </div>
                                                 </div>
                                                 <div className="overflow-x-auto max-h-96">
                                                      <table className="min-w-full divide-y divide-slate-100 dark:divide-slate-700 text-sm">

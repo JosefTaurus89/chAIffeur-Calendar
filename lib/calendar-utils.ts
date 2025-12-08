@@ -28,12 +28,12 @@ export const getMonthDays = (date: Date): Date[][] => {
   return weeks;
 };
 
-export const formatTime = (date: Date, format: '12h' | '24h' = '12h'): string => {
-  return date.toLocaleTimeString('en-US', {
+export const formatTime = (date: Date, format: '12h' | '24h' = '12h', locale: string = 'en-US'): string => {
+  return date.toLocaleTimeString(locale, {
     hour: 'numeric',
     minute: '2-digit',
     hour12: format === '12h',
-  }).toLowerCase().replace(' ', '');
+  }).toLowerCase();
 };
 
 export const isSameDay = (date1: Date, date2: Date): boolean => {

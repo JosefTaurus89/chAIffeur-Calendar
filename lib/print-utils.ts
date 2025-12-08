@@ -4,7 +4,7 @@ import { translations } from './translations';
 import { formatTime } from './calendar-utils';
 
 export const printReport = (title: string, subtitle: string, metrics: {label: string, value: string}[], tableHeaders: string[], tableRows: (string | number)[][]) => {
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open('', '_blank', 'width=1000,height=800,menubar=no,toolbar=no,location=no,status=no');
     if (!printWindow) return;
 
     const metricsHtml = metrics.map(m => `
@@ -27,7 +27,7 @@ export const printReport = (title: string, subtitle: string, metrics: {label: st
         <head>
             <title>${title}</title>
             <style>
-                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; color: #333; background: #fff; }
+                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; color: #333; background: #fff; margin: 0; }
                 .header { margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
                 h1 { margin: 0; font-size: 24px; color: #1e293b; }
                 p { margin: 5px 0 0; color: #64748b; font-size: 14px; }
@@ -41,9 +41,15 @@ export const printReport = (title: string, subtitle: string, metrics: {label: st
                 tr:last-child td { border-bottom: none; }
                 tr:nth-child(even) { background-color: #f8fafc; }
                 .footer { margin-top: 40px; font-size: 11px; color: #94a3b8; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+                
+                /* Back Button & Nav Styles */
+                .nav-header { background: #f1f5f9; border-bottom: 1px solid #e2e8f0; padding: 15px 40px; margin: -40px -40px 40px -40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+                .back-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #cbd5e1; background: white; padding: 8px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-weight: 600; color: #475569; transition: all 0.2s; font-size: 14px; font-family: inherit; }
+                .back-btn:hover { background: #f8fafc; color: #1e293b; border-color: #94a3b8; }
+                
                 @media print {
                     body { padding: 0; }
-                    .no-print { display: none; }
+                    .no-print, .nav-header { display: none !important; }
                     .metric { border: 1px solid #ccc; }
                     th { background-color: #eee !important; -webkit-print-color-adjust: exact; }
                     tr:nth-child(even) { background-color: #f9f9f9 !important; -webkit-print-color-adjust: exact; }
@@ -51,6 +57,14 @@ export const printReport = (title: string, subtitle: string, metrics: {label: st
             </style>
         </head>
         <body>
+            <div class="nav-header no-print">
+                <button onclick="window.close()" class="back-btn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to App
+                </button>
+                <div style="font-size: 12px; color: #64748b; font-weight: 600;">REPORT PREVIEW</div>
+            </div>
+
             <div class="header">
                 <div>
                     <h1>${title}</h1>
@@ -82,7 +96,7 @@ export const printReport = (title: string, subtitle: string, metrics: {label: st
 }
 
 export const generateVoucherPDF = (service: Service, driver: User | undefined, settings: AppSettings) => {
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open('', '_blank', 'width=1000,height=800,menubar=no,toolbar=no,location=no,status=no');
     if (!printWindow) return;
 
     const lang = settings.language;
@@ -124,8 +138,8 @@ export const generateVoucherPDF = (service: Service, driver: User | undefined, s
     <head>
         <title>Voucher - ${service.title}</title>
         <style>
-            body { font-family: 'Arial', sans-serif; background: #f0f0f0; padding: 40px; color: #333; }
-            .voucher { max-width: 800px; margin: 0 auto; background: #fff; border: 2px solid #333; position: relative; }
+            body { font-family: 'Arial', sans-serif; background: #e5e7eb; padding: 0; margin: 0; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+            .voucher { max-width: 800px; margin: 40px auto; background: #fff; border: 2px solid #333; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
             .header { background: #333; color: #fff; padding: 25px 40px; display: flex; justify-content: space-between; align-items: flex-start; }
             .company-details h1 { margin: 0 0 5px 0; font-size: 22px; letter-spacing: 1px; }
             .company-details div { font-size: 12px; opacity: 0.9; line-height: 1.4; }
@@ -150,9 +164,15 @@ export const generateVoucherPDF = (service: Service, driver: User | undefined, s
             
             .footer { background: #eee; padding: 15px 40px; text-align: center; font-size: 12px; color: #555; border-top: 1px solid #ccc; }
             
+            /* Nav Header Styles */
+            .nav-header { background: #111827; color: white; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .back-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-weight: 600; color: white; transition: all 0.2s; font-size: 14px; font-family: inherit; }
+            .back-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+
             @media print {
-                body { background: none; padding: 0; }
-                .voucher { border: 2px solid #000; }
+                body { background: none; display: block; }
+                .no-print, .nav-header { display: none !important; }
+                .voucher { margin: 0 auto; border: 2px solid #000; box-shadow: none; }
                 .header { background: #000 !important; -webkit-print-color-adjust: exact; }
                 .address-box { background: #f9f9f9 !important; -webkit-print-color-adjust: exact; border-left: 4px solid #000 !important; }
                 .driver-box { background: #fffbe6 !important; -webkit-print-color-adjust: exact; }
@@ -160,6 +180,14 @@ export const generateVoucherPDF = (service: Service, driver: User | undefined, s
         </style>
     </head>
     <body>
+        <div class="nav-header no-print">
+            <button onclick="window.close()" class="back-btn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to App
+            </button>
+            <span style="font-size: 12px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Voucher Preview</span>
+        </div>
+
         <div class="voucher">
             <div class="header">
                 ${companyInfo}

@@ -31,6 +31,8 @@ const zoomHeightMap: Record<number, string> = {
 export const MonthView: React.FC<MonthViewProps> = ({ weeks, services, currentMonth, selectedDate, onSelectService, onDaySelect, onDayDoubleClick, onTimeSlotClick, onMoveService, drivers, zoomLevel, settings }) => {
   // Force a simpler view if compactMode is on or just default to something more Google-like
   const dayCellHeight = settings.compactMode ? 'min-h-[3.5rem]' : (zoomHeightMap[zoomLevel] || 'min-h-[5rem]');
+  const localeMap: Record<string, string> = { en: 'en-US', it: 'it-IT', es: 'es-ES', fr: 'fr-FR', de: 'de-DE' };
+  const locale = localeMap[settings.language] || 'en-US';
 
   const handleCellClick = (day: Date) => {
     onDaySelect(day);
@@ -104,6 +106,8 @@ export const MonthView: React.FC<MonthViewProps> = ({ weeks, services, currentMo
                             onSelect={handleServiceClickInMonth} 
                             zoomLevel={zoomLevel}
                             isMonthView={true} // Force compact style for month view
+                            timeFormat={settings.timeFormat}
+                            locale={locale}
                         />
                     );
                   })}

@@ -23,6 +23,8 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
   const hours = getHours(startHour, endHour);
   const servicesForDay = services.filter(service => isSameDay(service.startTime, day));
   const positionedServices = organizeEventsForDay(servicesForDay);
+  const localeMap: Record<string, string> = { en: 'en-US', it: 'it-IT', es: 'es-ES', fr: 'fr-FR', de: 'de-DE' };
+  const locale = localeMap[settings.language] || 'en-US';
 
   const handleTimeSlotClick = (hour: number) => {
     const newServiceTime = new Date(day);
@@ -73,15 +75,19 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
     <div ref={scrollContainerRef} className="flex h-full overflow-y-auto">
       {/* Time column */}
       <div className="w-20 text-right pr-3 pt-2 border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 select-none sticky left-0 z-20">
-        {hours.map(hour => (
-          <div key={hour} className="relative" style={{ height: `${timeSlotHeight}px` }}>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 absolute -top-3 right-0">
-                {settings.timeFormat === '24h' 
-                    ? `${hour}:00` 
-                    : (hour === 12 ? '12 PM' : (hour > 12 ? `${hour - 12} PM` : (hour === 0 || hour === 24 ? '12 AM' : `${hour} AM`)))}
-              </span>
-          </div>
-        ))}
+        {hours.map(hour => {
+            const timeLabel = new Date();
+            timeLabel.setHours(hour, 0, 0, 0);
+            const label = timeLabel.toLocaleTimeString(locale, { hour: 'numeric', hour12: settings.timeFormat === '12h' });
+
+            return (
+              <div key={hour} className="relative" style={{ height: `${timeSlotHeight}px` }}>
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400 absolute -top-3 right-0">
+                    {label}
+                  </span>
+              </div>
+            );
+        })}
       </div>
 
       {/* Event column */}
@@ -129,6 +135,7 @@ export const DayView: React.FC<DayViewProps> = ({ day, services, onSelectService
                             timeFormat={settings.timeFormat}
                             style={style}
                             onDropOnService={handleDropOnService}
+                            locale={locale}
                         />
                     </div>
                 );

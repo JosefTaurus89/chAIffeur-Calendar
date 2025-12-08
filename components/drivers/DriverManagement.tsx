@@ -193,7 +193,7 @@ export const DriverManagement: React.FC<DriverManagementProps> = ({
               )}
 
               {activeTab === 'reports' && (
-                  <DriverReports drivers={drivers} services={services} />
+                  <DriverReports drivers={drivers} services={services} settings={settings} />
               )}
           </div>
       </div>

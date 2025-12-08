@@ -1,10 +1,12 @@
 
 import React, { useState, useMemo } from 'react';
-import { Service, User, PaymentStatus } from '../../types';
+import { Service, User, PaymentStatus, AppSettings } from '../../types';
+import { printReport } from '../../lib/print-utils';
 
 interface DriverReportsProps {
   drivers: User[];
   services: Service[];
+  settings: AppSettings;
 }
 
 const MetricCard: React.FC<{ title: string; value: string; subtitle?: string; color?: string }> = ({ title, value, subtitle, color }) => (
@@ -15,9 +17,16 @@ const MetricCard: React.FC<{ title: string; value: string; subtitle?: string; co
   </div>
 );
 
-export const DriverReports: React.FC<DriverReportsProps> = ({ drivers, services }) => {
+export const DriverReports: React.FC<DriverReportsProps> = ({ drivers, services, settings }) => {
   const [selectedDriverId, setSelectedDriverId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const localeMap: Record<string, string> = { en: 'en-US', it: 'it-IT', es: 'es-ES', fr: 'fr-FR', de: 'de-DE' };
+  const locale = settings?.language ? (localeMap[settings.language] || 'en-US') : 'en-US';
+
+  const formatCurrency = (amount: number) => {
+      return new Intl.NumberFormat(locale, { style: 'currency', currency: settings?.currency || 'EUR' }).format(amount);
+  };
 
   const driverData = useMemo(() => {
     if (!selectedDriverId) return null;
@@ -70,37 +79,109 @@ export const DriverReports: React.FC<DriverReportsProps> = ({ drivers, services 
     return { totalServices, totalRevenue, totalDriverPay, cashCollected, netPayable, filteredServices };
   }, [selectedDriverId, services, searchQuery]);
 
+  const handlePrint = () => {
+      if (!driverData || !selectedDriverId) return;
+      const driverName = drivers.find(d => d.id === selectedDriverId)?.name || 'Unknown';
+
+      const headers = [
+          'Date', 'Service', 'Client', 'Method', 'Total Price', 'Agreed Pay', 'Cash Held'
+      ];
+
+      const rows = driverData.filteredServices.map(service => {
+            const price = service.clientPrice || 0;
+            const deposit = service.deposit || 0;
+            const extras = service.extrasAmount || 0;
+            const method = (service.paymentMethod || '').toLowerCase();
+            let collected = 0;
+
+            if (
+                method.includes('cash') || 
+                method.includes('driver') || 
+                method.includes('balance') ||
+                method.includes('deposit') ||
+                method.includes('card')
+            ) {
+                if (!method.includes('prepaid') && !method.includes('invoice')) {
+                    collected = Math.max(0, price - deposit) + extras;
+                } else if (extras > 0) {
+                    collected = extras;
+                }
+            } else if (extras > 0) {
+                collected = extras;
+            }
+
+            return [
+                new Date(service.startTime).toLocaleDateString(locale),
+                service.title,
+                service.clientName,
+                service.paymentMethod || '-',
+                formatCurrency(price),
+                service.supplierCost ? formatCurrency(service.supplierCost) : '-',
+                collected > 0 ? formatCurrency(collected) : '-'
+            ];
+      });
+
+      // Add Total Row
+      rows.push([
+          "", "", "", "TOTALS",
+          `<b>${formatCurrency(driverData.totalRevenue)}</b>`,
+          `<b>${formatCurrency(driverData.totalDriverPay)}</b>`,
+          `<b>${formatCurrency(driverData.cashCollected)}</b>`
+      ]);
+
+      printReport(
+          `Driver Report: ${driverName}`,
+          `Generated via NCC`,
+          [
+              { label: 'Total Services', value: driverData.totalServices.toString() },
+              { label: 'Net Payable', value: formatCurrency(driverData.netPayable) + (driverData.netPayable < 0 ? ' (Driver owes Company)' : ' (Company pays Driver)') }
+          ],
+          headers,
+          rows
+      );
+  };
+
   return (
     <div className="space-y-6">
-        <div>
-            <label htmlFor="driver-select" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Select a Driver</label>
-            <select
-                id="driver-select"
-                value={selectedDriverId}
-                onChange={e => setSelectedDriverId(e.target.value)}
-                className="mt-1 block w-full md:w-1/3 bg-slate-50 text-slate-900 border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-end">
+            <div className="w-full sm:w-1/3">
+                <label htmlFor="driver-select" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Select a Driver</label>
+                <select
+                    id="driver-select"
+                    value={selectedDriverId}
+                    onChange={e => setSelectedDriverId(e.target.value)}
+                    className="mt-1 block w-full bg-slate-50 text-slate-900 border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200 p-2"
+                >
+                    <option value="">-- View report for --</option>
+                    {drivers.map(driver => (
+                        <option key={driver.id} value={driver.id}>{driver.name}</option>
+                    ))}
+                </select>
+            </div>
+            <button
+                onClick={handlePrint}
+                disabled={!selectedDriverId || !driverData}
+                className="flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-slate-800 rounded-lg hover:bg-slate-900 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                <option value="">-- View report for --</option>
-                {drivers.map(driver => (
-                    <option key={driver.id} value={driver.id}>{driver.name}</option>
-                ))}
-            </select>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Print Report
+            </button>
         </div>
 
         {driverData && (
             <div className="animate-fade-in-down">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <MetricCard title="Total Services" value={driverData.totalServices.toString()} />
-                    <MetricCard title="Total Agreed Pay" value={`$${driverData.totalDriverPay.toFixed(2)}`} subtitle="Wages / Commission" />
+                    <MetricCard title="Total Agreed Pay" value={formatCurrency(driverData.totalDriverPay)} subtitle="Wages / Commission" />
                     <MetricCard 
                         title="Cash Collected" 
-                        value={`$${driverData.cashCollected.toFixed(2)}`} 
+                        value={formatCurrency(driverData.cashCollected)} 
                         subtitle="Held by Driver" 
                         color="text-orange-600 dark:text-orange-400" 
                     />
                     <MetricCard 
                         title={driverData.netPayable >= 0 ? "Net Payable to Driver" : "Driver Owes Company"} 
-                        value={`$${Math.abs(driverData.netPayable).toFixed(2)}`} 
+                        value={formatCurrency(Math.abs(driverData.netPayable))} 
                         subtitle={driverData.netPayable >= 0 ? "(Pay - Cash Held)" : "(Cash Held > Pay)"}
                         color={driverData.netPayable >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}
                     />
@@ -160,7 +241,7 @@ export const DriverReports: React.FC<DriverReportsProps> = ({ drivers, services 
 
                                 return (
                                 <tr key={service.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{new Date(service.startTime).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{new Date(service.startTime).toLocaleDateString(locale)}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-slate-100">{service.title}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{service.clientName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
@@ -168,12 +249,12 @@ export const DriverReports: React.FC<DriverReportsProps> = ({ drivers, services 
                                             {service.paymentMethod || '-'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-slate-700 dark:text-slate-300">{`$${price.toFixed(2)}`}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-slate-700 dark:text-slate-300">{formatCurrency(price)}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-blue-600 dark:text-blue-400">
-                                        {service.supplierCost ? `$${service.supplierCost.toFixed(2)}` : '-'}
+                                        {service.supplierCost ? formatCurrency(service.supplierCost) : '-'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-semibold text-orange-600 dark:text-orange-400">
-                                        {isCollected ? `$${collected.toFixed(2)}` : '-'}
+                                        {isCollected ? formatCurrency(collected) : '-'}
                                     </td>
                                 </tr>
                             )})}
